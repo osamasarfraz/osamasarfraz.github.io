@@ -1,36 +1,16 @@
+---
+layout: default
+title: "Osama Sarfraz — Game Developer & Designer"
+description: "Portfolio of Osama Sarfraz — Senior Game Developer and Game Designer."
+---
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Osama Sarfraz — Game Developer & Designer</title>
-  <meta name="description" content="Portfolio of Osama Sarfraz — Senior Game Developer and Game Designer." />
-  <style>
-    :root{--bg:#0f1724;--card:#0b1220;--muted:#94a3b8;--accent:#7c3aed}
-    *{box-sizing:border-box}
-    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial;line-height:1.5;background:linear-gradient(180deg,#071025 0%, #071827 60%);color:#e6eef8}
-    .container{max-width:1000px;margin:36px auto;padding:20px}
-    header{display:flex;justify-content:space-between;align-items:center;gap:16px}
-    .brand{display:flex;gap:12px;align-items:center}
-    .logo{width:64px;height:64px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#2dd4bf);display:flex;align-items:center;justify-content:center;font-weight:700;color:#071025}
-    nav a{color:var(--muted);text-decoration:none;margin-left:14px}
-    .hero{display:grid;grid-template-columns:1fr 300px;gap:24px;align-items:start;margin-top:28px}
-    .card{background:rgba(255,255,255,0.03);border-radius:12px;padding:18px}
-    h1{margin:0 0 6px 0;font-size:28px}
-    h2{margin:0;font-size:18px;color:var(--muted)}
-    .meta{margin-top:10px;color:var(--muted);font-size:14px}
-    .contact{display:flex;flex-direction:column;gap:8px}
-    .contact a{color:#fff;text-decoration:none}
-    .skills{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-    .skill{background:rgba(255,255,255,0.02);padding:6px 10px;border-radius:8px;color:var(--muted);font-size:13px}
-    section{margin-top:18px}
-    .experience-item{display:flex;gap:14px;border-radius:10px;padding:12px;background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent)}
-    .exp-title{font-weight:700}
-    .projects{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
-    .project{padding:12px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent)}
-    footer{margin:28px 0;text-align:center;color:var(--muted);font-size:13px}
-    @media(max-width:880px){.hero{grid-template-columns:1fr}.logo{width:56px;height:56px}}
-  </style>
+  <title>{{ page.title }}</title>
+  <meta name="description" content="{{ page.description }}" />
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
 </head>
 <body>
   <div class="container">
@@ -205,9 +185,6 @@
       Built from details in the provided resume. Source data used from the uploaded PDF.
     </footer>
   </div>
-  <script>
-    // small helpers: smooth scroll
-    document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();document.querySelector(a.getAttribute('href')).scrollIntoView({behavior:'smooth'});}));
-  </script>
+  <script src="{{ '/assets/js/main.js' | relative_url }}"></script>
 </body>
 </html>
