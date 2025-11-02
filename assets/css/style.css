@@ -1,3 +1,20 @@
+/* EMERGENCY MINIMA OVERRIDE */
+body, html {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.site-header, 
+.site-footer,
+.wrapper {
+  display: none !important;
+}
+
+.page-content {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
 /* Reset and base styles */
 * {
   margin: 0;
