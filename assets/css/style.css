@@ -1,6 +1,6 @@
 /* assets/css/style.css */
 
-/* :root {
+ :root {
   --bg: #0f1724;
   --card: #0b1220;
   --muted: #94a3b8;
@@ -166,7 +166,7 @@ footer {
 }
 
 /* === Jekyll Minima overrides === */
-/*.wrapper {
+.wrapper {
   max-width: 100%;
   padding: 0;
   margin: 0;
@@ -178,13 +178,13 @@ main.page-content {
 }
 
 .site-header, .site-footer {
-  display: none; /* hide Minima’s built-in header/footer 
+  display: none; /* hide Minima’s built-in header/footer */
 }
 
 body {
   padding-top: 0 !important;
 } 
-*/
+
 
 /* ===== assets/css/style.css ADDITIONS ===== */
 
