@@ -43,3 +43,16 @@ fadeElems.forEach(elem => {
   elem.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
   observer.observe(elem);
 });
+
+// Mobile menu toggle (optional - add if you want mobile navigation)
+function initMobileMenu() {
+  const nav = document.querySelector('nav');
+  if (window.innerWidth < 768) {
+    // You could add a hamburger menu here
+    console.log('Mobile layout detected');
+  }
+}
+
+// Initialize on load
+window.addEventListener('load', initMobileMenu);
+window.addEventListener('resize', initMobileMenu);
