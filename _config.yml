@@ -1,31 +1,17 @@
 # _config.yml
-
-title: Osama Sarfraz — Game Developer & Designer
-description: Portfolio of Osama Sarfraz — Senior Game Developer and Game Designer.
+title: Osama Sarfraz
+description: Senior Game Developer & Game Designer
 baseurl: ""
 url: "https://osamasarfraz.github.io"
+theme: minima
 
-# Remove theme to use custom layout
-# theme: minima
+# Minima dark skin
+minima:
+  skin: dark
 
 # Build settings
 markdown: kramdown
 permalink: pretty
 
-# Disable default Minima layouts
-defaults:
-  - scope:
-      path: ""
-      type: "pages"
-    values:
-      layout: "default"
-
-# Exclude Minima files
-exclude:
-  - Gemfile
-  - Gemfile.lock
-  - node_modules
-  - vendor/bundle/
-  - vendor/cache/
-  - vendor/gems/
-  - vendor/ruby/
+# Social links (optional)
+github_username: osamasarfraz
