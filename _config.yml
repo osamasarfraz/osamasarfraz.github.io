@@ -1,26 +1,15 @@
-# theme: jekyll-theme-minimal
-# title: Osama's homepage
-# description: Bookmark this to keep an eye on my project updates
 
-# _config.yml
-
-# Site settings
-title: Osama Sarfraz — Game Developer & Designer
-description: Portfolio of Osama Sarfraz — Senior Game Developer and Game Designer.
-baseurl: "" # the subpath of your site, e.g. /portfolio
-url: "https://osamasarfraz.github.io" # your GitHub Pages URL
-theme: minima
-
-# Build settings
+title: "Osama Sarfraz — Game Developer & Designer"
+description: "Portfolio of Osama Sarfraz — Senior Game Developer and Game Designer."
+theme: null
 markdown: kramdown
-permalink: pretty
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
 
-# Social links
-social_links:
-  email: osamasarfrazsheikh@gmail.com
-  github: osamasarfraz
-  itch: osamasarfraz
-  youtube: osamasarfraz
+url: "https://osamasarfraz.github.io"
+baseurl: ""
+
+# Optional GitHub Pages settings
+github:
+  is_project_page: false
