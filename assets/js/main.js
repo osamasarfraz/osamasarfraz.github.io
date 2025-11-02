@@ -1,3 +1,5 @@
+// assets/js/main.js
+
 // Smooth scrolling for anchor links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', function (e) {
@@ -12,7 +14,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   });
 });
 
-// Header shadow toggle on scroll
+// Simple header shadow toggle on scroll
 window.addEventListener('scroll', () => {
   const header = document.querySelector('header');
   if (window.scrollY > 40) {
@@ -27,7 +29,7 @@ window.addEventListener('scroll', () => {
 });
 
 // Fade-in animation on scroll
-const fadeElems = document.querySelectorAll('.card, .project-card, .experience-item');
+const fadeElems = document.querySelectorAll('.card, .project, .experience-item');
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -43,16 +45,3 @@ fadeElems.forEach(elem => {
   elem.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
   observer.observe(elem);
 });
-
-// Mobile menu toggle (optional - add if you want mobile navigation)
-function initMobileMenu() {
-  const nav = document.querySelector('nav');
-  if (window.innerWidth < 768) {
-    // You could add a hamburger menu here
-    console.log('Mobile layout detected');
-  }
-}
-
-// Initialize on load
-window.addEventListener('load', initMobileMenu);
-window.addEventListener('resize', initMobileMenu);
