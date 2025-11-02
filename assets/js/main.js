@@ -1,6 +1,10 @@
 // Smooth scrolling
-document.querySelectorAll('a[href^="#"]').forEach(a=>{
-  a.addEventListener('click',e=>{
-    const id=a.getAttribute('href');if(id.startsWith('#')){e.preventDefault();
-    document.querySelector(id)?.scrollIntoView({behavior:'smooth'});}});
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const id = a.getAttribute('href');
+    if (id.startsWith('#')) {
+      e.preventDefault();
+      document.querySelector(id)?.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
 });

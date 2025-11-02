@@ -1,11 +1,77 @@
-:root{--bg:#0f1724;--card:#0b1220;--muted:#94a3b8;--accent:#7c3aed}
-body{background:var(--bg);color:white;font-family:Inter,Arial,sans-serif;margin:0;padding:0}
-.container{padding:24px}
-.projects-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:12px}
-@media(max-width:1000px){.projects-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:640px){.projects-grid{grid-template-columns:1fr}}
-.project-card{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border-radius:12px;padding:16px;display:flex;flex-direction:column;align-items:center;height:300px;transition:transform 0.25s ease, box-shadow 0.25s ease}
-.project-card:hover{transform:translateY(-8px);box-shadow:0 20px 40px rgba(124,58,237,0.12)}
-.project-icon{width:100px;height:100px;border-radius:50%;object-fit:cover;box-shadow:0 8px 20px rgba(0,0,0,0.6),0 0 18px rgba(124,58,237,0.06)}
-.store-btn{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.04);box-shadow:0 6px 18px rgba(124,58,237,0.14)}
-.store-btn img{width:22px;height:22px}
+:root {
+  --bg: #0f1724;
+  --card: #0b1220;
+  --muted: #94a3b8;
+  --accent: #7c3aed;
+}
+
+body {
+  background: var(--bg);
+  color: white;
+  font-family: Inter, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  padding: 24px;
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 12px;
+}
+
+@media (max-width: 1000px) {
+  .projects-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.project-card {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 300px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(124, 58, 237, 0.12);
+}
+
+.project-icon {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6), 0 0 18px rgba(124, 58, 237, 0.06);
+}
+
+.store-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: 0 6px 18px rgba(124, 58, 237, 0.14);
+}
+
+.store-btn img {
+  width: 22px;
+  height: 22px;
+}
