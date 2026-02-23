@@ -48,6 +48,17 @@ header {
   justify-content: center;
   font-weight: 700;
   color: #071025;
+  overflow: hidden;
+  padding: 0;
+  flex: 0 0 auto;
+}
+
+.logo img {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  display: block;
+  border-radius: 10px;
 }
 
 nav a {
@@ -160,6 +171,10 @@ footer {
   }
 
   .logo {
+    width: 56px;
+    height: 56px;
+  }
+  .logo img {
     width: 56px;
     height: 56px;
   }

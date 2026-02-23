@@ -1,16 +1,11 @@
----
-layout: default
-title: "Osama Sarfraz — Game Developer & Designer"
-description: "Portfolio of Osama Sarfraz — Senior Game Developer and Game Designer."
----
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>{{ page.title }}</title>
-  <meta name="description" content="{{ page.description }}" />
-  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+  <title>Osama Sarfraz — Game Developer &amp; Designer</title>
+  <meta name="description" content="Portfolio of Osama Sarfraz — Senior Game Developer and Game Designer." />
+  <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
   <div class="container">
@@ -35,14 +30,26 @@ description: "Portfolio of Osama Sarfraz — Senior Game Developer and Game Desi
         <div class="card">
           <section id="about">
             <h3 style="margin-top:18px">About</h3>
-            <p style="color:var(--muted);margin-top:8px">I possess extensive technical expertise in the Unity Engine, proficient in designing and developing both 2D and 3D multiplayer WebGL as well as Android and iOS games. My strong command of C# enables me to implement complex game mechanics and interactive features efficiently, alongside a solid understanding of design patterns and the decision-making skills to determine the most appropriate pattern for each scenario. I have a thorough understanding of smart asset utilization, optimization techniques, and deployment processes to ensure high-performance gaming experiences across platforms.</p>
+              <p style="color:var(--muted);margin-top:8px">I possess extensive technical expertise in the Unity Engine, proficient in designing and developing both 2D and 3D multiplayer WebGL as well as Android and iOS games. My strong command of C# enables me to implement complex game mechanics and interactive features efficiently, alongside a solid understanding of design patterns and the decision-making skills to determine the most appropriate pattern for each scenario. I have a thorough understanding of smart asset utilization, optimization techniques, and deployment processes to ensure high-performance gaming experiences across platforms.</p>
 
-            <p style="color:var(--muted);margin-top:8px">In addition to my technical skills, I excel in collaborative environments, maintaining clear communication within teams to drive project success. I am well-versed in Continuous Integration and Continuous Deployment (CI/CD) pipelines, which streamline development workflows and enhance product delivery. This combination of technical proficiency and teamwork enables me to contribute effectively to innovative and engaging game development projects.</p>
+              <p style="color:var(--muted);margin-top:8px">In addition to my technical skills, I excel in collaborative environments, maintaining clear communication within teams to drive project success. I am well-versed in Continuous Integration and Continuous Deployment (CI/CD) pipelines, which streamline development workflows and enhance product delivery. This combination of technical proficiency and teamwork enables me to contribute effectively to innovative and engaging game development projects.</p>
           </section>
 
           <section id="experience">
             <h3 style="margin-top:18px">Work Experience</h3>
             <div style="display:flex;flex-direction:column;gap:10px;margin-top:10px">
+
+              <div class="experience-item">
+                <div style="width:6px;background:#10b981;border-radius:4px"></div>
+                <div>
+                  <div class="exp-title">Senior Game Developer — Eplanet Global</div>
+                  <div class="meta">03/2024 - Present · Karachi, Pakistan</div>
+                  <ul style="margin-top:8px;color:var(--muted)">
+                    <li>Developing 2D/3D multiplayer WebGL games using Unity Engine.</li>
+                    <li>Implementing networked gameplay systems and performance optimizations for web platforms.</li>
+                  </ul>
+                </div>
+              </div>
 
               <div class="experience-item">
                 <div style="width:6px;background:var(--accent);border-radius:4px"></div>
@@ -53,18 +60,6 @@ description: "Portfolio of Osama Sarfraz — Senior Game Developer and Game Desi
                     <li>Built gameplay prototypes &amp; titles ("The Link", "Dot Trail", "Sliced Food") for Octothink.</li>
                     <li>Created a new game from scratch: "Gravity Bottle Flip".</li>
                     <li>Fixed major issues and shipped bug fixes for the product Octothink.</li>
-                  </ul>
-                </div>
-              </div>
-
-              <div class="experience-item">
-                <div style="width:6px;background:#10b981;border-radius:4px"></div>
-                <div>
-                  <div class="exp-title">Senior Game Developer — Eplanet Global</div>
-                  <div class="meta">03/2024 - Present · Karachi, Pakistan</div>
-                  <ul style="margin-top:8px;color:var(--muted)">
-                    <li>Developing 2D/3D multiplayer WebGL games using Unity Engine.</li>
-                    <li>Implementing networked gameplay systems and performance optimizations for web platforms.</li>
                   </ul>
                 </div>
               </div>
@@ -152,12 +147,6 @@ description: "Portfolio of Osama Sarfraz — Senior Game Developer and Game Desi
 
           </div>
         </section>
-              <div class="meta">3D Puzzle</div>
-              <div style="margin-top:8px"><a href="https://osamasarfraz.itch.io/defend-the-dice" target="_blank">itch.io</a></div>
-            </div>
-
-          </div>
-        </section>
 
       </div>
 
@@ -196,6 +185,6 @@ description: "Portfolio of Osama Sarfraz — Senior Game Developer and Game Desi
 
     
   </div>
-  <script src="{{ '/assets/js/main.js' | relative_url }}"></script>
+  <script src="/assets/js/main.js"></script>
 </body>
 </html>
