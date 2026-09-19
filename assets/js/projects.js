@@ -1,7 +1,7 @@
 // Project data for the 3D gallery. Mirrors the "Selected Projects" section of
 // the current site (index.html) so the prototype shows real content.
 
-const IMG = '../assets/img/projects/';
+const IMG = 'assets/img/projects/';
 
 export const projects = [
   {
