@@ -2,7 +2,7 @@
 // the visitor launches by pulling down and releasing.
 
 import * as THREE from 'three';
-import { createBottlePhysics, COM_H, MAX_POWER } from './bottle-physics.js';
+import { createBottlePhysics, COM_H, MAX_POWER } from './bottle-physics.js?v=2.0.1';
 
 export { MAX_POWER };
 

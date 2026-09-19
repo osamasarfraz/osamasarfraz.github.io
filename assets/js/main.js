@@ -1,6 +1,6 @@
-import { createBottleHero, MAX_POWER } from './bottle.js';
-import { createGallery, drawCoverArt } from './gallery.js';
-import { projects } from './projects.js';
+import { createBottleHero, MAX_POWER } from './bottle.js?v=2.0.1';
+import { createGallery, drawCoverArt } from './gallery.js?v=2.0.1';
+import { projects } from './projects.js?v=2.0.1';
 
 // Power band that lands a clean flip, measured by sweeping bottle-physics.js
 const SWEET = [0.9, 1.175];

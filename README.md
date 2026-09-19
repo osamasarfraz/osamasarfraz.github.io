@@ -49,6 +49,8 @@ Then open `http://localhost:8000`.
 ## ⚙️ Deployment
 GitHub Pages serves the `main` branch from the repository root. Push to `main` and the site updates within a minute or two.
 
+**Before each deploy that changes CSS or JS**, bump the `?v=` version on the stylesheet and script in `index.html` and on the `import` lines in `assets/js/main.js` and `assets/js/bottle.js` (search for `?v=`). GitHub Pages lets browsers cache files for 10 minutes; without a new version, returning visitors can briefly get the new page with old styles or scripts.
+
 ---
 
 ## ♿ Accessibility

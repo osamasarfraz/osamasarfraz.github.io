@@ -8,7 +8,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css">
+  <!-- Bump ?v= on every deploy that changes CSS or JS, so browsers never mix
+       a new page with cached old files (GitHub Pages caches for 10 minutes). -->
+  <link rel="stylesheet" href="assets/css/style.css?v=2.0.1">
   <script type="importmap">
     {
       "imports": {
@@ -436,6 +438,6 @@
     <button id="dialog-close" class="round close" aria-label="Close">✕</button>
   </dialog>
 
-  <script type="module" src="assets/js/main.js"></script>
+  <script type="module" src="assets/js/main.js?v=2.0.1"></script>
 </body>
 </html>
