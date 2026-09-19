@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Osama Sarfraz — Game Developer & Designer</title>
+  <meta name="description" content="Portfolio of Osama Sarfraz — Senior Game Developer and Game Designer." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.js",
+        "cannon-es": "https://cdn.jsdelivr.net/npm/cannon-es@0.20.0/dist/cannon-es.js"
+      }
+    }
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="identity">
+      <a class="brand" href="#hero">
+        <img src="../assets/img/osama.jpg" alt="" width="36" height="36">
+        <span>Osama Sarfraz</span>
+      </a>
+      <!-- Brand icons: Simple Icons (CC0) — LinkedIn from v13.21.0, itch.io from v16.31.0. -->
+      <a class="social linkedin" href="https://www.linkedin.com/in/osama-sarfraz-a21639b1/" target="_blank" rel="noopener" aria-label="LinkedIn profile (opens in a new tab)">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        <span>LinkedIn</span>
+      </a>
+      <a class="social itch" href="https://osamasarfraz.itch.io/" target="_blank" rel="noopener" aria-label="itch.io games (opens in a new tab)">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.13 1.338C2.08 1.96.02 4.328 0 4.95v1.03c0 1.303 1.22 2.45 2.325 2.45 1.33 0 2.436-1.102 2.436-2.41 0 1.308 1.07 2.41 2.4 2.41 1.328 0 2.362-1.102 2.362-2.41 0 1.308 1.137 2.41 2.466 2.41h.024c1.33 0 2.466-1.102 2.466-2.41 0 1.308 1.034 2.41 2.363 2.41 1.33 0 2.4-1.102 2.4-2.41 0 1.308 1.106 2.41 2.435 2.41C22.78 8.43 24 7.282 24 5.98V4.95c-.02-.62-2.082-2.99-3.13-3.612-3.253-.114-5.508-.134-8.87-.133-3.362 0-7.945.053-8.87.133zm6.376 6.477a2.74 2.74 0 0 1-.468.602c-.5.49-1.19.795-1.947.795a2.786 2.786 0 0 1-1.95-.795c-.182-.178-.32-.37-.446-.59-.127.222-.303.412-.486.59a2.788 2.788 0 0 1-1.95.795c-.092 0-.187-.025-.264-.052-.107 1.113-.152 2.176-.168 2.95v.005l-.006 1.167c.02 2.334-.23 7.564 1.03 8.85 1.952.454 5.545.662 9.15.663 3.605 0 7.198-.21 9.15-.664 1.26-1.284 1.01-6.514 1.03-8.848l-.006-1.167v-.004c-.016-.775-.06-1.838-.168-2.95-.077.026-.172.052-.263.052a2.788 2.788 0 0 1-1.95-.795c-.184-.178-.36-.368-.486-.59-.127.22-.265.412-.447.59a2.786 2.786 0 0 1-1.95.794c-.76 0-1.446-.303-1.948-.793a2.74 2.74 0 0 1-.468-.602 2.738 2.738 0 0 1-.463.602 2.787 2.787 0 0 1-1.95.794h-.16a2.787 2.787 0 0 1-1.95-.793 2.738 2.738 0 0 1-.464-.602zm-2.004 2.59v.002c.795.002 1.5 0 2.373.953.687-.072 1.406-.108 2.125-.107.72 0 1.438.035 2.125.107.873-.953 1.578-.95 2.372-.953.376 0 1.876 0 2.92 2.934l1.123 4.028c.832 2.995-.266 3.068-1.636 3.07-2.03-.075-3.156-1.55-3.156-3.025-1.124.184-2.436.276-3.748.277-1.312 0-2.624-.093-3.748-.277 0 1.475-1.125 2.95-3.156 3.026-1.37-.004-2.468-.077-1.636-3.072l1.122-4.027c1.045-2.934 2.545-2.934 2.92-2.934zM12 12.714c-.002.002-2.14 1.964-2.523 2.662l1.4-.056v1.22c0 .056.56.033 1.123.007.562.026 1.124.05 1.124-.008v-1.22l1.4.055C14.138 14.677 12 12.713 12 12.713z"/></svg>
+        <span>itch.io</span>
+      </a>
+    </div>
+    <nav>
+      <a href="#projects">Projects</a>
+      <a href="#experience">Experience</a>
+      <a class="nav-extra" href="#skills">Skills</a>
+      <a class="nav-extra" href="#education">Education</a>
+      <a class="nav-extra" href="#achievements">Achievements</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <section id="hero" class="hero">
+    <canvas id="hero-canvas" aria-hidden="true"></canvas>
+
+    <div class="hero-copy">
+      <p class="eyebrow">Lead Game Developer · Game Designer</p>
+      <h1>Technical developer<br>with creative flair.</h1>
+      <p class="lede">I research my way to the result each project needs, and deliver work that leaves clients and employers satisfied. I've mastered Unity end to end — including its latest features — whether the work is networking, front end or interactive gameplay.</p>
+      <p class="lede-short">Research-driven Unity expert across networking, front end and gameplay.</p>
+      <div class="cta">
+        <a class="btn primary" href="#projects">See my games</a>
+        <a class="btn" href="#contact">Get in touch</a>
+      </div>
+    </div>
+
+    <div id="flip-zone" class="flip-zone" tabindex="0" role="application"
+         aria-label="Bottle flip mini-game. Hold Space to charge, release to flip. Or press, drag down and release.">
+      <div id="hint" class="hint"><span class="hint-arrow">↓</span> Pull down &amp; release to flip the bottle</div>
+    </div>
+
+    <div class="meter" aria-hidden="true">
+      <div id="meter-sweet" class="meter-sweet"></div>
+      <div id="meter-fill" class="meter-fill"></div>
+    </div>
+
+    <div class="scoreboard" aria-live="polite">
+      <span>Flips <b id="stat-flips">0</b></span>
+      <span>Streak <b id="stat-streak">0</b></span>
+      <span>Best <b id="stat-best">0</b></span>
+    </div>
+    <div id="toast" class="toast" role="status" hidden></div>
+  </section>
+
+  <section id="projects" class="projects">
+    <div class="section-head">
+      <h2>Selected projects</h2>
+      <p class="hint-pointer">Drag to spin · click the front card for details · ← → keys work too</p>
+      <p class="hint-touch">Swipe to spin · tap the front card for details</p>
+    </div>
+
+    <div id="gallery-stage" class="gallery-stage" tabindex="0" aria-label="Project carousel. Use left and right arrow keys, Enter for details.">
+      <canvas id="gallery-canvas" aria-hidden="true"></canvas>
+    </div>
+
+    <div id="gallery-caption" class="gallery-caption" aria-live="polite">
+      <button id="prev" class="round" aria-label="Previous project">←</button>
+      <div class="cap-text">
+        <span class="cap-count"></span>
+        <strong class="cap-title"></strong>
+        <span class="cap-meta"></span>
+      </div>
+      <button id="open" class="btn primary small">Details</button>
+      <button id="next" class="round" aria-label="Next project">→</button>
+    </div>
+
+    <ul id="project-list" class="project-list"></ul>
+  </section>
+
+
+  <section id="experience" class="experience">
+    <div class="wrap">
+      <div class="section-head left">
+        <h2>Experience</h2>
+        <p>Seven years of shipping games in Karachi, from hyper-casual hits to open-world multiplayer.</p>
+      </div>
+
+      <ol class="timeline">
+        <li class="job current">
+          <div class="when">
+            <span class="dates">06/2026 – Present</span>
+            <span class="now">Current</span>
+          </div>
+          <div class="what">
+            <div class="role">
+              <span class="logo-tile pad"><img src="../assets/img/companies/meta-frolic-labs.png" alt="" width="56" height="56" loading="lazy"></span>
+              <div>
+                <h3>Lead Game Developer</h3>
+                <p class="org">Meta Frolic Labs</p>
+              </div>
+            </div>
+            <h4>Project leadership &amp; development</h4>
+            <ul>
+              <li>Leading development of Meta Frolic's game projects, including an open-world multiplayer game built with Mirror Networking and Nakama.</li>
+              <li>Building <em>Just Different Experience</em>, an open-world, third-person multiplayer platformer where players climb to reach the final destination at the top.</li>
+              <li>Developing small multiplayer board games with PUN2.</li>
+            </ul>
+            <h4>Game mechanics &amp; tools</h4>
+            <ul>
+              <li>Owning game controls, physics and tooling to deliver the best possible gameplay feel.</li>
+            </ul>
+            <h4>Backend &amp; API integration</h4>
+            <ul>
+              <li>Integrating backend server APIs, using AI tools to improve efficiency and accuracy.</li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="job current">
+          <div class="when">
+            <span class="dates">03/2026 – Present</span>
+            <span class="now">Current</span>
+          </div>
+          <div class="what">
+            <div class="role">
+              <span class="logo-tile fill"><img src="../assets/img/companies/dha-suffa-university.jpg" alt="" width="56" height="56" loading="lazy"></span>
+              <div>
+                <h3>Visiting Faculty</h3>
+                <p class="org">DHA Suffa University</p>
+              </div>
+            </div>
+            <h4>Course instruction &amp; curriculum</h4>
+            <ul>
+              <li>Teaching Game Programming in Unity, with a focus on tools, best practices and optimization.</li>
+              <li>Designed the course curriculum to prepare students for industry.</li>
+            </ul>
+            <h4>Student assessment</h4>
+            <ul>
+              <li>Managing assessments, grading and progress tracking.</li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="job">
+          <div class="when"><span class="dates">03/2024 – 04/2026</span></div>
+          <div class="what">
+            <div class="role">
+              <span class="logo-tile fill"><img src="../assets/img/companies/eplanet-global.jpg" alt="" width="56" height="56" loading="lazy"></span>
+              <div>
+                <h3>Senior Game Developer</h3>
+                <p class="org">ePlanet Global · Trango Tech</p>
+              </div>
+            </div>
+            <h4>Game development &amp; design</h4>
+            <ul>
+              <li>Built client games across genres: multiplayer board games, educational games, top-down battle arenas, visual novels and web-based games.</li>
+            </ul>
+            <h4>Multiplayer &amp; backend</h4>
+            <ul>
+              <li>Delivered multiplayer with Nakama Server and Photon.</li>
+              <li>Created a custom asynchronous, non-instance-based API that saves user progress for every project needing backend persistence.</li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="job">
+          <div class="when"><span class="dates">03/2023 – 03/2024</span></div>
+          <div class="what">
+            <div class="role">
+              <span class="logo-tile fill"><img src="../assets/img/companies/absolutely-digital.jpg" alt="" width="56" height="56" loading="lazy"></span>
+              <div>
+                <h3>Unity Game Developer</h3>
+                <p class="org">Absolutely Digital</p>
+              </div>
+            </div>
+            <h4>Game development &amp; design</h4>
+            <ul>
+              <li>Developed 2D educational games themed around maths and physics.</li>
+              <li>Created the physics-based game <em>Gravity Bottle Flip</em> from scratch.</li>
+              <li>Designed and built <em>The Link</em>, <em>Dot Trail</em> and <em>Sliced Food</em> for the OctoThink app.</li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="job">
+          <div class="when"><span class="dates">08/2019 – 03/2023</span></div>
+          <div class="what">
+            <div class="role">
+              <span class="logo-tile pad"><img src="../assets/img/companies/game-storm-studios.png" alt="" width="56" height="56" loading="lazy"></span>
+              <div>
+                <h3>Senior Game Developer</h3>
+                <p class="org">The Game Storm Studios</p>
+              </div>
+            </div>
+            <h4>Game development &amp; design</h4>
+            <ul>
+              <li>Took mobile games from concept to launch on iOS, Android and the Amazon Store with Unity.</li>
+              <li>Specialized in 3D hyper-casual games and 2D simulators.</li>
+            </ul>
+            <h4>Monetization</h4>
+            <ul>
+              <li>Integrated Google, Unity and IronSource ad networks to grow revenue.</li>
+            </ul>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="skills" class="skills">
+    <div class="wrap">
+      <div class="section-head left">
+        <h2>Skills</h2>
+        <p>The stack I ship with, and what I bring to a team.</p>
+      </div>
+
+      <div class="skill-groups">
+        <div class="skill-group">
+          <h3>Engine &amp; code</h3>
+          <ul class="chips">
+            <li class="core">Unity Engine</li>
+            <li class="core">C#</li>
+            <li>Design Patterns</li>
+            <li>Reactive Programming</li>
+            <li>Physics Simulation</li>
+            <li>Animation</li>
+            <li>Lighting</li>
+            <li>Cameras</li>
+            <li>2D &amp; 3D</li>
+          </ul>
+        </div>
+        <div class="skill-group">
+          <h3>Multiplayer &amp; backend</h3>
+          <ul class="chips">
+            <li class="core">Nakama</li>
+            <li class="core">Photon / PUN2</li>
+            <li class="core">Mirror Networking</li>
+            <li>REST APIs</li>
+            <li>Asynchronous APIs</li>
+            <li>Backend Solutions</li>
+            <li>Data Persistence</li>
+          </ul>
+        </div>
+        <div class="skill-group">
+          <h3>Shipping &amp; growth</h3>
+          <ul class="chips">
+            <li>WebGL</li>
+            <li>Android</li>
+            <li>iOS</li>
+            <li>Optimization</li>
+            <li>Deployment</li>
+            <li>CI/CD</li>
+            <li>Monetization</li>
+            <li>Ad Network Integration</li>
+          </ul>
+        </div>
+        <div class="skill-group">
+          <h3>Game design</h3>
+          <ul class="chips">
+            <li>Game Mechanics</li>
+            <li>User Experience</li>
+            <li>Educational Games</li>
+            <li>Open World Design</li>
+          </ul>
+        </div>
+        <div class="skill-group">
+          <h3>Leadership</h3>
+          <ul class="chips">
+            <li>Project Leadership</li>
+            <li>Teaching</li>
+            <li>Curriculum Design</li>
+            <li>Collaboration</li>
+            <li>Communication</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section id="education" class="education">
+    <div class="wrap">
+      <div class="section-head left">
+        <h2>Education</h2>
+        <p>Software Engineering at Mohammad Ali Jinnah University (MAJU), Karachi.</p>
+      </div>
+
+      <ol class="timeline">
+        <li class="job">
+          <div class="when">
+            <span class="dates">01/2020 – 12/2022</span>
+            <span class="grade">CGPA 3.43</span>
+          </div>
+          <div class="what">
+            <div class="role">
+              <span class="logo-tile fill"><img src="../assets/img/companies/maju.jpg" alt="" width="56" height="56" loading="lazy"></span>
+              <div>
+                <h3>Master of Science, Software Engineering</h3>
+                <p class="org">Mohammad Ali Jinnah University</p>
+              </div>
+            </div>
+            <h4>Thesis · Facilitating Learning Through ICT Games</h4>
+            <ul>
+              <li>Supervised by the Dean and President of MAJU. Tackles children's learning challenges by building intrinsic motivation, aligned with standard textbook chapters.</li>
+              <li>Built <em>Ray-Flex: In a Murky Space</em>, a game that teaches Class X physics (reflection and refraction) through play. <a href="https://osamasarfraz.itch.io/ray-flex-in-a-murky-space" target="_blank" rel="noopener">Play it on itch.io ↗</a></li>
+            </ul>
+          </div>
+        </li>
+        <li class="job">
+          <div class="when">
+            <span class="dates">01/2015 – 12/2019</span>
+            <span class="grade">CGPA 3.33</span>
+          </div>
+          <div class="what">
+            <div class="role">
+              <span class="logo-tile fill"><img src="../assets/img/companies/maju.jpg" alt="" width="56" height="56" loading="lazy"></span>
+              <div>
+                <h3>Bachelor of Science, Software Engineering</h3>
+                <p class="org">Mohammad Ali Jinnah University</p>
+              </div>
+            </div>
+            <h4>Final year project · Mazdoor</h4>
+            <ul>
+              <li>An Android app for classified construction labour, with a user-friendly UX designed for Pakistani users.</li>
+            </ul>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="achievements" class="achievements">
+    <div class="wrap">
+      <div class="section-head left">
+        <h2>Achievements</h2>
+        <p>Talks, training and recognition beyond the day job.</p>
+      </div>
+
+      <ul class="awards">
+        <li>
+          <span class="kind">Talk</span>
+          <h3>Guest speaker at Karachi.AI</h3>
+          <p>Spoke on AI-assisted game development and received a certificate of recognition.</p>
+        </li>
+        <li>
+          <span class="kind">Training</span>
+          <h3>Unreal Engine Training Cohort</h3>
+          <p>Hands-on experience and advanced game development skills in Unreal Engine.</p>
+        </li>
+        <li>
+          <span class="kind">Evaluator</span>
+          <h3>External Evaluator, MAJU</h3>
+          <p>Assessed students' final year projects and gave detailed feedback to uphold academic standards.</p>
+        </li>
+        <li>
+          <span class="kind">Certification</span>
+          <h3>IELTS</h3>
+          <p>Overall band score of 6.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <footer id="contact" class="contact">
+    <div class="wrap">
+      <h2>Let's make something fun.</h2>
+      <p class="contact-lede">Open to new roles, collaborations and game ideas. Pick whichever way suits you.</p>
+
+      <ul class="contact-grid">
+        <li>
+          <a class="contact-tile" href="https://www.linkedin.com/in/osama-sarfraz-a21639b1/" target="_blank" rel="noopener">
+            <span class="contact-icon linkedin"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></span>
+            <span class="contact-text"><strong>LinkedIn</strong><span>osama-sarfraz-a21639b1</span></span>
+          </a>
+        </li>
+        <li>
+          <a class="contact-tile" href="https://osamasarfraz.itch.io/" target="_blank" rel="noopener">
+            <span class="contact-icon itch"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.13 1.338C2.08 1.96.02 4.328 0 4.95v1.03c0 1.303 1.22 2.45 2.325 2.45 1.33 0 2.436-1.102 2.436-2.41 0 1.308 1.07 2.41 2.4 2.41 1.328 0 2.362-1.102 2.362-2.41 0 1.308 1.137 2.41 2.466 2.41h.024c1.33 0 2.466-1.102 2.466-2.41 0 1.308 1.034 2.41 2.363 2.41 1.33 0 2.4-1.102 2.4-2.41 0 1.308 1.106 2.41 2.435 2.41C22.78 8.43 24 7.282 24 5.98V4.95c-.02-.62-2.082-2.99-3.13-3.612-3.253-.114-5.508-.134-8.87-.133-3.362 0-7.945.053-8.87.133zm6.376 6.477a2.74 2.74 0 0 1-.468.602c-.5.49-1.19.795-1.947.795a2.786 2.786 0 0 1-1.95-.795c-.182-.178-.32-.37-.446-.59-.127.222-.303.412-.486.59a2.788 2.788 0 0 1-1.95.795c-.092 0-.187-.025-.264-.052-.107 1.113-.152 2.176-.168 2.95v.005l-.006 1.167c.02 2.334-.23 7.564 1.03 8.85 1.952.454 5.545.662 9.15.663 3.605 0 7.198-.21 9.15-.664 1.26-1.284 1.01-6.514 1.03-8.848l-.006-1.167v-.004c-.016-.775-.06-1.838-.168-2.95-.077.026-.172.052-.263.052a2.788 2.788 0 0 1-1.95-.795c-.184-.178-.36-.368-.486-.59-.127.22-.265.412-.447.59a2.786 2.786 0 0 1-1.95.794c-.76 0-1.446-.303-1.948-.793a2.74 2.74 0 0 1-.468-.602 2.738 2.738 0 0 1-.463.602 2.787 2.787 0 0 1-1.95.794h-.16a2.787 2.787 0 0 1-1.95-.793 2.738 2.738 0 0 1-.464-.602zm-2.004 2.59v.002c.795.002 1.5 0 2.373.953.687-.072 1.406-.108 2.125-.107.72 0 1.438.035 2.125.107.873-.953 1.578-.95 2.372-.953.376 0 1.876 0 2.92 2.934l1.123 4.028c.832 2.995-.266 3.068-1.636 3.07-2.03-.075-3.156-1.55-3.156-3.025-1.124.184-2.436.276-3.748.277-1.312 0-2.624-.093-3.748-.277 0 1.475-1.125 2.95-3.156 3.026-1.37-.004-2.468-.077-1.636-3.072l1.122-4.027c1.045-2.934 2.545-2.934 2.92-2.934zM12 12.714c-.002.002-2.14 1.964-2.523 2.662l1.4-.056v1.22c0 .056.56.033 1.123.007.562.026 1.124.05 1.124-.008v-1.22l1.4.055C14.138 14.677 12 12.713 12 12.713z"/></svg></span>
+            <span class="contact-text"><strong>itch.io</strong><span>osamasarfraz.itch.io</span></span>
+          </a>
+        </li>
+        <li>
+          <a class="contact-tile" href="mailto:osamasarfrazsheikh@gmail.com">
+            <span class="contact-icon email">
+              <svg viewBox="0 0 24 24" aria-hidden="true" class="line"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M4 7l8 6 8-6"/></svg>
+            </span>
+            <span class="contact-text"><strong>Email</strong><span>osamasarfrazsheikh@gmail.com</span></span>
+          </a>
+        </li>
+        <li>
+          <a class="contact-tile" href="tel:+923132753719">
+            <span class="contact-icon phone">
+              <svg viewBox="0 0 24 24" aria-hidden="true" class="line"><rect x="6.5" y="2.5" width="11" height="19" rx="2.5"/><path d="M10.5 18.5h3"/></svg>
+            </span>
+            <span class="contact-text"><strong>Phone</strong><span>+92 313 2753719</span></span>
+          </a>
+        </li>
+      </ul>
+
+      <p class="current-site"><a href="../">See the current site ↗</a></p>
+    </div>
+  </footer>
+
+  <dialog id="project-dialog" class="dialog">
+    <img id="dialog-img" alt="">
+    <div class="dialog-body">
+      <h3 id="dialog-title"></h3>
+      <p id="dialog-meta"></p>
+      <p id="dialog-about" class="dialog-about" hidden></p>
+      <div id="dialog-links" class="dialog-links"></div>
+    </div>
+    <button id="dialog-close" class="round close" aria-label="Close">✕</button>
+  </dialog>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
