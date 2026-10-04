@@ -1,16 +1,16 @@
-# Osama Sarfraz — Game Developer & Designer Portfolio
+# Osama Sarfraz — Lead Game Developer Portfolio
 
-Source for [osamasarfraz.github.io](https://osamasarfraz.github.io), the interactive portfolio of Osama Sarfraz, Lead Game Developer specializing in Unity, C#, multiplayer networking and gameplay systems.
+Source for [osamasarfraz.github.io](https://osamasarfraz.github.io), the portfolio of Osama Sarfraz, Lead Game Developer specialising in Unity, C#, multiplayer networking and gameplay systems.
 
 ---
 
 ## 🎮 What's on the site
-- **Bottle-flip hero** — a playable physics mini-game: press, pull down and release (or hold Space) to flip the bottle. Land it upright to build a streak.
-- **3D project gallery** — every shipped and in-development game on a rotating ring, with details and store links.
-- **Experience, Skills, Education and Achievements** — plain, readable HTML, with workplace and university logos.
+- **Hero** — a typographic introduction with portrait, headline stats and a "now building" card.
+- **Projects** — a filterable grid of all 22 games (filter by genre), each with cover art, store links and a details dialog.
+- **Experience, Skills, Education and Achievements** — plain, readable HTML with workplace and university logos.
 - **Contact** — LinkedIn, itch.io, email and phone.
 
-Built with [three.js](https://threejs.org) and [cannon-es](https://github.com/pmndrs/cannon-es), loaded from the jsdelivr CDN — no build step.
+Plain HTML, CSS and JavaScript. No framework, no build step, no runtime dependencies.
 
 ---
 
@@ -19,13 +19,10 @@ Built with [three.js](https://threejs.org) and [cannon-es](https://github.com/pm
 .
 ├── index.html                 # The whole page (content lives here as HTML)
 ├── assets/
-│   ├── css/style.css          # Site styles
+│   ├── css/style.css          # Site styles (design tokens at the top)
 │   ├── js/
-│   │   ├── main.js            # Wires up the page: hero input, gallery, dialog
-│   │   ├── bottle.js          # Renders the bottle-flip scene
-│   │   ├── bottle-physics.js  # Flip physics (no rendering; can run in Node)
-│   │   ├── gallery.js         # 3D project ring + generated card covers
-│   │   └── projects.js        # Project data for the gallery
+│   │   ├── main.js            # Project grid, filters, dialog, scroll effects
+│   │   └── projects.js        # Project data (titles, genres, art, links)
 │   └── img/
 │       ├── projects/          # Game screenshots and icons
 │       ├── companies/         # Workplace and university logos
@@ -33,7 +30,7 @@ Built with [three.js](https://threejs.org) and [cannon-es](https://github.com/pm
 └── _config.yml                # GitHub Pages settings
 ```
 
-To add or edit a game, update `assets/js/projects.js`. Experience, skills and the rest are edited directly in `index.html`.
+To add or edit a game, update `assets/js/projects.js` — each entry's fields are documented at the top of the file. Square icons are shown as an app tile on a blurred backdrop; wide screenshots fill the card. Projects without art get a generated monogram cover. Experience, skills and the rest are edited directly in `index.html`.
 
 ---
 
@@ -49,13 +46,14 @@ Then open `http://localhost:8000`.
 ## ⚙️ Deployment
 GitHub Pages serves the `main` branch from the repository root. Push to `main` and the site updates within a minute or two.
 
-**Before each deploy that changes CSS or JS**, bump the `?v=` version on the stylesheet and script in `index.html` and on the `import` lines in `assets/js/main.js` and `assets/js/bottle.js` (search for `?v=`). GitHub Pages lets browsers cache files for 10 minutes; without a new version, returning visitors can briefly get the new page with old styles or scripts.
+**Before each deploy that changes CSS or JS**, bump the `?v=` version on the stylesheet and script in `index.html` and on the `import` line in `assets/js/main.js` (search for `?v=`). GitHub Pages lets browsers cache files for 10 minutes; without a new version, returning visitors can briefly get the new page with old styles or scripts.
 
 ---
 
 ## ♿ Accessibility
-- Every project is also listed as plain HTML for screen readers, and shown as a list when WebGL is unavailable.
-- The bottle flip and gallery work from the keyboard; animations calm down under `prefers-reduced-motion`.
+- Every project card is real HTML: titles, links and filters all work from the keyboard, and the details dialog is a native `<dialog>`.
+- Motion (orbs, reveal-on-scroll, card entrance) is disabled under `prefers-reduced-motion`.
+- Text colours meet WCAG AA contrast on their backgrounds.
 
 ---
 

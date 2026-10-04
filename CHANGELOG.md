@@ -2,6 +2,16 @@
 
 All notable changes to this project are documented in this file.
 
+## v3.0.0 - 2026-10-04
+
+- Redesigned the site with a refined dark theme: new palette (ember/amber accent, teal secondary), Space Grotesk headings, glass cards, reveal-on-scroll and a frosted sticky top bar.
+- Replaced the bottle-flip mini-game hero with a typographic hero: headline, portrait, stats and a "now building" card.
+- Replaced the three.js 3D ring gallery with a filterable project grid (filter by genre). Cards show real art where it exists (icons as tiles on a blurred backdrop, wide screenshots full-bleed) and a generated monogram cover otherwise; featured projects span two columns.
+- Added a details dialog per project with genre, status, description and store links.
+- Removed three.js and cannon-es (no more CDN dependencies) and the `bottle.js`, `bottle-physics.js` and `gallery.js` modules.
+- Added Open Graph tags, a favicon, a skip link and active-section highlighting in the nav.
+- Added *Hammy's Cosmic Wheel* (Juniper Dev game jam entry on itch.io), *Super Stylist Nail Salon* and the DSU external-evaluator achievement.
+
 ## v2.0.0 - 2026-09-19
 
 - Rebuilt the site as an interactive three.js portfolio, replacing the Jekyll/Minima page.
@@ -23,4 +33,3 @@ All notable changes to this project are documented in this file.
 - Removed the privacy/footer note referencing the uploaded resume/PDF.
 - Removed macOS `.DS_Store` files and added `.gitignore`.
 - Minor CSS/JS tweaks: fixed logo sizing, added image object-fit, and small responsive rules.
-
