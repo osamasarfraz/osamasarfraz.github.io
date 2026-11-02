@@ -2,6 +2,19 @@
 
 All notable changes to this project are documented in this file.
 
+## v4.0.0 - 2026-11-02
+
+- Redesigned the site around "game feel": a deep plum playfield with power-up accents (coin yellow, pink, cyan, lime, violet), Unbounded display type and Figtree body text.
+- The hero headline now has physics: letters drop in under gravity and land with squash and dust, react to the cursor with springy wobble and a colour hit-flash, and launch with sparks and screen shake on click or tap (new `hero.js`).
+- Added a tilting portrait card with glare, a "now building" toast that slides in after the intro, and a scrolling stack marquee.
+- Each genre now has its own colour, used on filters, card labels, hover glows and generated covers.
+- Project cards tilt toward the cursor; filtering animates leaving, moving and entering cards; a sliding pill marks the active filter and the active nav section.
+- The project dialog zooms out of the clicked card and back into it on close.
+- Section headings reveal word by word; the experience and education timelines fill as you scroll and light each role as you reach it.
+- Achievements are styled as in-game unlocks with badges that pop in.
+- Added a mobile menu, chunky "game button" CTAs and a subtle film-grain overlay.
+- Everything still works without JavaScript, and motion is switched off under `prefers-reduced-motion`.
+
 ## v3.0.0 - 2026-10-04
 
 - Redesigned the site with a refined dark theme: new palette (ember/amber accent, teal secondary), Space Grotesk headings, glass cards, reveal-on-scroll and a frosted sticky top bar.

@@ -5,9 +5,9 @@ Source for [osamasarfraz.github.io](https://osamasarfraz.github.io), the portfol
 ---
 
 ## 🎮 What's on the site
-- **Hero** — a typographic introduction with portrait, headline stats and a "now building" card.
-- **Projects** — a filterable grid of all 22 games (filter by genre), each with cover art, store links and a details dialog.
-- **Experience, Skills, Education and Achievements** — plain, readable HTML with workplace and university logos.
+- **Hero** — a headline with game-feel physics: the letters drop in and bounce on load, wobble when the cursor brushes them and launch with sparks and screen shake when clicked. Beside it, a tilting portrait card and a "now building" toast; below, a scrolling stack marquee.
+- **Projects** — a filterable grid of all 22 games, colour-coded by genre. Cards tilt toward the cursor, filtering animates cards into their new places, and the details dialog zooms out of the card you clicked.
+- **Experience, Skills, Education and Achievements** — plain, readable HTML. The timelines fill as you scroll, and achievements "unlock" like in-game badges.
 - **Contact** — LinkedIn, itch.io, email and phone.
 
 Plain HTML, CSS and JavaScript. No framework, no build step, no runtime dependencies.
@@ -21,7 +21,9 @@ Plain HTML, CSS and JavaScript. No framework, no build step, no runtime dependen
 ├── assets/
 │   ├── css/style.css          # Site styles (design tokens at the top)
 │   ├── js/
-│   │   ├── main.js            # Project grid, filters, dialog, scroll effects
+│   │   ├── main.js            # Project grid, filters, dialog; starts everything
+│   │   ├── hero.js            # Physics headline, sparks canvas, "now building" toast
+│   │   ├── fx.js              # Scroll reveals, tilt, sliding pills, timeline rail, menu
 │   │   └── projects.js        # Project data (titles, genres, art, links)
 │   └── img/
 │       ├── projects/          # Game screenshots and icons
@@ -52,7 +54,8 @@ GitHub Pages serves the `main` branch from the repository root. Push to `main` a
 
 ## ♿ Accessibility
 - Every project card is real HTML: titles, links and filters all work from the keyboard, and the details dialog is a native `<dialog>`.
-- Motion (orbs, reveal-on-scroll, card entrance) is disabled under `prefers-reduced-motion`.
+- Under `prefers-reduced-motion` the page is still: no physics headline, tilt, marquee, reveals or dialog zoom.
+- The physics headline keeps the real text for screen readers; the animated letters are hidden from assistive tech.
 - Text colours meet WCAG AA contrast on their backgrounds.
 
 ---

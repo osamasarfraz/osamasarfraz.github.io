@@ -1,22 +1,18 @@
-// Wires up the page: project grid + filters, details dialog, scroll effects.
-import { projects, GENRES } from './projects.js?v=3.0.0';
+// Wires up the page: project grid + filters, details dialog, then hands off to
+// the hero physics (hero.js) and page-wide motion (fx.js).
+import { projects, GENRES } from './projects.js?v=4.0.0';
+import { initFx, observeReveal, tilt, slidingPill, reduce } from './fx.js?v=4.0.0';
+import { initHero } from './hero.js?v=4.0.0';
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const EASE = 'cubic-bezier(.16,1,.3,1)';
 
 // Wide art (16:9-ish) fills the cover. Anything squarer — app icons, 4:3
 // gameplay captures — sits as a tile on a blurred backdrop of itself.
 // Decided by the file's real dimensions once loaded.
 const WIDE = (w, h) => w / h >= 1.45;
 const SQUARE = (w, h) => Math.abs(w / h - 1) < 0.08;
-
-// Gradient pairs for projects without art (ember/teal/amber, varied by index).
-const GEN = [
-  ['rgba(255,122,89,.75)', 'rgba(45,212,191,.55)'],
-  ['rgba(45,212,191,.7)', 'rgba(255,179,71,.5)'],
-  ['rgba(255,179,71,.7)', 'rgba(255,122,89,.5)'],
-  ['rgba(99,102,241,.6)', 'rgba(45,212,191,.5)'],
-];
 
 const STORE_ICON = {
   'Play Store': '<svg viewBox="0 0 24 24"><path d="M3.6 1.8 13.3 12 3.6 22.2c-.3-.2-.5-.6-.5-1V2.8c0-.4.2-.8.5-1zm11 8.9 2.7 2.7-10.6 6.1 7.9-8.8zm0 2.6L6.7 4.5l10.6 6.1-2.7 2.7zm4.9-.8c.6.3.6 1.2 0 1.5l-2.8 1.6-3-3 3-3 2.8 1.9z"/></svg>',
@@ -31,12 +27,10 @@ const monogram = (title) => title.split(/[\s:-]+/).filter(Boolean).slice(0, 2).m
 
 // Builds the cover markup; the "tile" vs full-bleed choice is made when the
 // image loads, by swapping classes (so the HTML never needs to know sizes).
-function coverParts(p, i) {
-  if (!p.image) {
-    const [c1, c2] = GEN[i % GEN.length];
-    return { cls: 'gen', style: `--c1:${c1};--c2:${c2}`, inner: `<span class="mono" aria-hidden="true">${esc(monogram(p.title))}</span>` };
-  }
-  return { cls: '', style: '', inner: `<img src="${esc(p.image)}" alt="" loading="lazy" decoding="async">` };
+// Projects without art get a cover in their genre's colours (see style.css).
+function coverParts(p) {
+  if (!p.image) return { cls: 'gen', inner: `<span class="mono" aria-hidden="true">${esc(monogram(p.title))}</span>` };
+  return { cls: '', inner: `<img src="${esc(p.image)}" alt="" loading="lazy" decoding="async">` };
 }
 function fitCover(cover) {
   const img = cover.querySelector('img');
@@ -59,35 +53,87 @@ function linkHTML(l) {
 }
 
 // ---------------- Grid ----------------
+const grid = $('#project-grid');
+
 function renderGrid() {
-  const grid = $('#project-grid');
   grid.innerHTML = projects.map((p, i) => {
     const status = p.status
       ? `<span class="card-status${/development/i.test(p.status) ? ' dev' : ''}">${esc(p.status)}</span>` : '';
-    const c = coverParts(p, i);
+    const c = coverParts(p);
     return `
-    <li class="card${p.featured ? ' featured' : ''}" data-genre="${esc(p.genre)}" style="animation-delay:${(i % 6) * 60}ms">
-      <button class="card-cover ${c.cls}" type="button" data-open="${i}" aria-label="Details for ${esc(p.title)}" style="${c.style}">
-        ${status}${c.inner}
-      </button>
-      <div class="card-body">
-        <span class="card-genre">${esc(p.genre)}</span>
-        <h3><button type="button" data-open="${i}">${esc(p.title)}</button></h3>
-        <p class="card-meta">${esc(p.meta)}</p>
-        <div class="card-links">
-          ${(p.links || []).map(linkHTML).join('')}
-          ${p.about ? `<button class="link-pill more" type="button" data-open="${i}">${INFO_ICON}About</button>` : ''}
+    <li class="card reveal${p.featured ? ' featured' : ''}" data-genre="${esc(p.genre)}">
+      <div class="card-inner">
+        <button class="card-cover ${c.cls}" type="button" data-open="${i}" aria-label="Details for ${esc(p.title)}">
+          ${status}${c.inner}
+        </button>
+        <div class="card-body">
+          <span class="card-genre">${esc(p.genre)}</span>
+          <h3><button type="button" data-open="${i}">${esc(p.title)}</button></h3>
+          <p class="card-meta">${esc(p.meta)}</p>
+          <div class="card-links">
+            ${(p.links || []).map(linkHTML).join('')}
+            ${p.about ? `<button class="link-pill more" type="button" data-open="${i}">${INFO_ICON}About</button>` : ''}
+          </div>
         </div>
+        <span class="glare" aria-hidden="true"></span>
       </div>
     </li>`;
   }).join('');
 
   grid.querySelectorAll('.card-cover').forEach(fitCover);
+  grid.querySelectorAll('.card-inner').forEach((el) => tilt(el, 7));
+  observeReveal([...grid.children]);
 
   grid.addEventListener('click', (e) => {
     const btn = e.target.closest('[data-open]');
-    if (btn) openProject(Number(btn.dataset.open));
+    if (btn) openProject(Number(btn.dataset.open), btn.closest('.card'));
   });
+}
+
+// Filtering animates what changed: leaving cards shrink away, the rest glide
+// to their new slots (FLIP), and newcomers pop in.
+let filterRun = 0;
+async function applyFilter(genre) {
+  const run = ++filterRun;
+  const cards = [...grid.children];
+  const match = (c) => genre === 'All' || c.dataset.genre === genre;
+  cards.forEach((c) => c.getAnimations().forEach((a) => a.cancel()));
+
+  if (!reduce) {
+    const leaving = cards.filter((c) => !c.classList.contains('hidden') && !match(c));
+    await Promise.all(leaving.map((c) => c.animate(
+      [{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'scale(.9) translateY(10px)' }],
+      { duration: 200, easing: 'ease-in', fill: 'forwards' },
+    ).finished.catch(() => {})));
+    if (run !== filterRun) return;
+  }
+
+  const first = new Map(cards.filter((c) => !c.classList.contains('hidden')).map((c) => [c, c.getBoundingClientRect()]));
+  cards.forEach((c) => {
+    c.getAnimations().forEach((a) => a.cancel());
+    c.classList.toggle('hidden', !match(c));
+  });
+
+  let shown = 0, entering = 0;
+  cards.forEach((c) => {
+    if (c.classList.contains('hidden')) return;
+    shown++;
+    c.classList.add('in');
+    if (reduce) return;
+    const a = first.get(c), b = c.getBoundingClientRect();
+    if (a) {
+      const dx = a.left - b.left, dy = a.top - b.top;
+      if (Math.abs(dx) > 1 || Math.abs(dy) > 1) {
+        c.animate([{ transform: `translate(${dx}px, ${dy}px)` }, { transform: 'none' }], { duration: 650, easing: EASE });
+      }
+    } else if (b.top < window.innerHeight && b.bottom > 0) {
+      c.animate(
+        [{ opacity: 0, transform: 'scale(.88) translateY(24px)' }, { opacity: 1, transform: 'none' }],
+        { duration: 600, delay: 60 + entering++ * 45, easing: 'cubic-bezier(.34,1.56,.64,1)', fill: 'backwards' },
+      );
+    }
+  });
+  $('#project-empty').hidden = shown > 0;
 }
 
 function renderFilters() {
@@ -99,74 +145,83 @@ function renderFilters() {
       ${esc(g)}<span class="count">${g === 'All' ? projects.length : counts[g]}</span>
     </button>`).join('');
 
+  const place = slidingPill(box);
+  const active = () => box.querySelector('[aria-pressed="true"]');
+  requestAnimationFrame(() => place(active(), true));
+  document.fonts?.ready.then(() => place(active(), true));
+
   box.addEventListener('click', (e) => {
     const btn = e.target.closest('.filter');
-    if (!btn) return;
+    if (!btn || btn.getAttribute('aria-pressed') === 'true') return;
     box.querySelectorAll('.filter').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
-    const g = btn.dataset.genre;
-    let shown = 0;
-    $('#project-grid').querySelectorAll('.card').forEach((card, i) => {
-      const show = g === 'All' || card.dataset.genre === g;
-      card.classList.toggle('hidden', !show);
-      if (show) {
-        // replay the entrance animation
-        card.style.animation = 'none';
-        void card.offsetWidth;
-        card.style.animation = '';
-        card.style.animationDelay = `${(shown % 6) * 50}ms`;
-        shown++;
-      }
-    });
-    $('#project-empty').hidden = shown > 0;
+    place(btn);
+    applyFilter(btn.dataset.genre);
   });
 }
 
 // ---------------- Dialog ----------------
+// Opens by zooming out of the card that was clicked, and closes back into it.
 const dialog = $('#project-dialog');
-function openProject(i) {
+let origin = null;
+
+function fromOrigin() {
+  const cover = origin?.querySelector('.card-cover');
+  if (!cover || !cover.offsetParent) return { opacity: 0, transform: 'translateY(30px) scale(.94)' };
+  const a = cover.getBoundingClientRect(), b = dialog.getBoundingClientRect();
+  const s = a.width / b.width;
+  return {
+    opacity: 0.3,
+    transform: `translate(${a.left + a.width / 2 - (b.left + b.width / 2)}px, ${a.top - b.top - (b.height * (1 - s)) / 2}px) scale(${s})`,
+  };
+}
+
+function openProject(i, card) {
   const p = projects[i];
+  origin = card || null;
+  dialog.dataset.genre = p.genre;
   $('#dialog-title').textContent = p.title;
   $('#dialog-meta').textContent = p.genre + ' · ' + p.meta + (p.status ? ' · ' + p.status : '');
   const about = $('#dialog-about');
   about.textContent = p.about || '';
   about.hidden = !p.about;
   const cover = $('#dialog-cover');
-  const c = coverParts(p, i);
+  const c = coverParts(p);
   cover.className = `dialog-cover ${c.cls}`;
-  cover.style.cssText = c.style;
   cover.innerHTML = c.inner;
   fitCover(cover);
   $('#dialog-links').innerHTML = (p.links || []).map(linkHTML).join('')
     || '<span class="card-meta">No public link yet.</span>';
+  dialog.classList.remove('closing');
   dialog.showModal();
+  if (!reduce) {
+    dialog.animate([fromOrigin(), { opacity: 1, transform: 'none' }], { duration: 520, easing: EASE });
+    $('.dialog-body', dialog).animate(
+      [{ opacity: 0, transform: 'translateY(14px)' }, { opacity: 1, transform: 'none' }],
+      { duration: 500, delay: 160, easing: EASE, fill: 'backwards' },
+    );
+  }
 }
-$('#dialog-close').addEventListener('click', () => dialog.close());
-dialog.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
 
-// ---------------- Scroll effects ----------------
-function initScroll() {
-  const bar = $('#topbar');
-  const onScroll = () => bar.classList.toggle('scrolled', window.scrollY > 24);
-  onScroll();
-  window.addEventListener('scroll', onScroll, { passive: true });
-
-  const reveal = new IntersectionObserver((entries) => {
-    entries.forEach((en) => { if (en.isIntersecting) { en.target.classList.add('in'); reveal.unobserve(en.target); } });
-  }, { rootMargin: '0px 0px -10% 0px' });
-  document.querySelectorAll('.reveal').forEach((el) => reveal.observe(el));
-
-  // Highlight the nav link for the section in view.
-  const links = [...document.querySelectorAll('.nav a')];
-  const spy = new IntersectionObserver((entries) => {
-    entries.forEach((en) => {
-      if (!en.isIntersecting) return;
-      links.forEach((a) => a.classList.toggle('active', a.getAttribute('href') === '#' + en.target.id));
-    });
-  }, { rootMargin: '-40% 0px -55% 0px' });
-  links.forEach((a) => { const t = $(a.getAttribute('href')); if (t) spy.observe(t); });
+let closing = false;
+async function closeDialog() {
+  if (!dialog.open || closing) return;
+  if (!reduce) {
+    closing = true;
+    dialog.classList.add('closing');
+    await dialog.animate([{ opacity: 1, transform: 'none' }, fromOrigin()], { duration: 280, easing: 'cubic-bezier(.4,0,.8,.4)', fill: 'forwards' })
+      .finished.catch(() => {});
+    closing = false;
+  }
+  dialog.close();
+  dialog.classList.remove('closing');
+  dialog.getAnimations().forEach((a) => a.cancel());
 }
+$('#dialog-close').addEventListener('click', closeDialog);
+dialog.addEventListener('click', (e) => { if (e.target === dialog) closeDialog(); });
+dialog.addEventListener('cancel', (e) => { e.preventDefault(); closeDialog(); });
 
 $('#year').textContent = new Date().getFullYear();
 renderGrid();
 renderFilters();
-initScroll();
+initFx();
+initHero();
