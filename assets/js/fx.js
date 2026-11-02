@@ -1,6 +1,9 @@
-// Page-wide motion helpers: scroll reveals, word-split headings, pointer tilt,
-// the sliding pill indicator, the scroll-filled timeline rail, the top bar and
+// Page-wide motion helpers: scroll reveals, word-split headings, pointer tilt
+// with parallax, magnetic buttons, the sliding pill indicator, the scroll-filled
+// timeline rail, a scroll-reactive marquee, the progress bar, the top bar and
 // the mobile menu. Each one degrades to a still, fully readable page.
+
+import { sfx } from './sfx.js?v=4.1.0';
 
 export const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 export const finePointer = matchMedia('(hover: hover) and (pointer: fine)').matches;
@@ -53,6 +56,8 @@ export function tilt(el, max = 8) {
     el.style.setProperty('--ry', `${((px - 0.5) * max).toFixed(2)}deg`);
     el.style.setProperty('--mx', `${(px * 100).toFixed(1)}%`);
     el.style.setProperty('--my', `${(py * 100).toFixed(1)}%`);
+    el.style.setProperty('--px', ((px - 0.5) * 2).toFixed(3));
+    el.style.setProperty('--py', ((py - 0.5) * 2).toFixed(3));
   };
   el.addEventListener('pointerenter', () => el.classList.add('tilting'));
   el.addEventListener('pointermove', (e) => { ev = e; raf ||= requestAnimationFrame(apply); });
@@ -61,7 +66,46 @@ export function tilt(el, max = 8) {
     el.classList.remove('tilting');
     el.style.setProperty('--rx', '0deg');
     el.style.setProperty('--ry', '0deg');
+    el.style.setProperty('--px', '0');
+    el.style.setProperty('--py', '0');
   });
+}
+
+// Buttons that lean toward the pointer when it comes near (fine pointers only).
+// Only the nearest button engages, and none does while the pointer is over
+// some other control, so neighbouring buttons never slide into each other.
+export function magnetic(els, reach = 28, pull = 0.3, maxX = 8, maxY = 6) {
+  if (reduce || !finePointer || !els.length) return;
+  let raf = 0, ev = null;
+  const release = (el) => {
+    if (!el.classList.contains('magnet')) return;
+    el.style.setProperty('--bx', '0px');
+    el.style.setProperty('--by', '0px');
+    el.classList.remove('magnet');
+  };
+  const apply = () => {
+    raf = 0;
+    const over = ev.target instanceof Element ? ev.target.closest('a, button, input, select, textarea, [role="button"]') : null;
+    let best = null, bestD = Infinity, bx = 0, by = 0;
+    for (const el of els) {
+      const r = el.getBoundingClientRect();
+      const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+      const dx = ev.clientX - cx, dy = ev.clientY - cy;
+      // distance from the pointer to the button's edge (0 when inside it)
+      const d = Math.hypot(Math.max(0, Math.abs(dx) - r.width / 2), Math.max(0, Math.abs(dy) - r.height / 2));
+      if (d <= reach && d < bestD && (!over || over === el)) { best = el; bestD = d; bx = dx; by = dy; }
+    }
+    for (const el of els) if (el !== best) release(el);
+    if (best) {
+      const ease = 1 - bestD / (reach + 1); // fades out toward the edge of reach
+      const clampTo = (v, m) => Math.max(-m, Math.min(m, v));
+      best.style.setProperty('--bx', `${clampTo(bx * pull * ease, maxX).toFixed(1)}px`);
+      best.style.setProperty('--by', `${clampTo(by * pull * ease, maxY).toFixed(1)}px`);
+      best.classList.add('magnet');
+    }
+  };
+  window.addEventListener('pointermove', (e) => { ev = e; raf ||= requestAnimationFrame(apply); }, { passive: true });
+  window.addEventListener('pointerleave', () => els.forEach(release));
 }
 
 // A pill that glides to whichever item is active. Returns place(active).
@@ -113,6 +157,58 @@ function initTimelines() {
   update();
 }
 
+// The stack marquee scrolls on its own and speeds up with the page's scroll
+// velocity, in whichever direction you scroll.
+function initMarquee() {
+  const track = $('.marquee-track');
+  if (!track || reduce) return;
+  const half = () => track.scrollWidth / 2;
+  let x = 0, speed = 0.6, boost = 0, lastY = window.scrollY, last = performance.now();
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    boost += (y - lastY) * 0.12;
+    lastY = y;
+  }, { passive: true });
+  const frame = (now) => {
+    const dt = Math.min((now - last) / 16.667, 3);
+    last = now;
+    boost *= Math.pow(0.92, dt);
+    x -= (speed + Math.max(-12, Math.min(12, boost))) * dt;
+    const w = half();
+    if (w) x = ((x % w) + w) % w - w;
+    track.style.transform = `translate3d(${x.toFixed(1)}px,0,0)`;
+    requestAnimationFrame(frame);
+  };
+  requestAnimationFrame(frame);
+}
+
+function initProgress() {
+  const bar = $('#progress');
+  if (!bar) return;
+  let queued = false;
+  const update = () => {
+    queued = false;
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.transform = `scaleX(${max > 0 ? Math.min(1, window.scrollY / max) : 0})`;
+  };
+  window.addEventListener('scroll', () => { if (!queued) { queued = true; requestAnimationFrame(update); } }, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+}
+
+// Achievement badges chime as they unlock (only if sound is on).
+function initUnlockSounds() {
+  const awards = $$('.award');
+  if (!awards.length || reduce) return;
+  const io = new IntersectionObserver((entries) => {
+    entries.filter((en) => en.isIntersecting).forEach((en, i) => {
+      sfx.unlock(i);
+      io.unobserve(en.target);
+    });
+  }, { threshold: 0.3 });
+  awards.forEach((a) => io.observe(a));
+}
+
 function initTopbar() {
   const bar = $('#topbar');
   const onScroll = () => bar.classList.toggle('scrolled', window.scrollY > 24);
@@ -122,7 +218,7 @@ function initTopbar() {
   // Mobile menu
   const btn = $('#menu-btn'), nav = $('#site-nav');
   const setOpen = (open) => { nav.classList.toggle('open', open); btn.setAttribute('aria-expanded', String(open)); };
-  btn.addEventListener('click', () => setOpen(!nav.classList.contains('open')));
+  btn.addEventListener('click', () => { setOpen(!nav.classList.contains('open')); sfx.click(); });
   nav.addEventListener('click', (e) => { if (e.target.closest('a')) setOpen(false); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && nav.classList.contains('open')) { setOpen(false); btn.focus(); } });
   document.addEventListener('click', (e) => { if (!bar.contains(e.target)) setOpen(false); });
@@ -150,5 +246,9 @@ export function initFx() {
   observeReveal($$('.reveal'));
   initTimelines();
   initTopbar();
+  initMarquee();
+  initProgress();
+  initUnlockSounds();
   tilt($('.portrait-frame'), 14);
+  magnetic($$('.cta .btn, .topbar .btn.primary'));
 }

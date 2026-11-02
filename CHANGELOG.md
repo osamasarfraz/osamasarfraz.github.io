@@ -2,6 +2,21 @@
 
 All notable changes to this project are documented in this file.
 
+## v4.1.0 - 2026-11-02
+
+- The headline keeps score: each click earns points that float up from the cursor, quick successive clicks build a combo multiplier (with a fanfare every fifth), and a small HUD shows the score and your best, remembered between visits.
+- Added opt-in synthesised sound effects (`sfx.js`): landing thuds, hit blips that climb in pitch, launch bursts, filter and menu clicks, dialog whooshes, a flip whoosh and achievement chimes. The speaker button in the top bar turns them on and remembers the choice.
+- The portrait now flips over into a "player card" when clicked or tapped (level, guild, main weapon, side quest and an XP bar).
+- The hero stats count up once the headline has landed.
+- Primary buttons lean toward the pointer when it comes near.
+- Card covers shift in parallax as the card tilts.
+- The stack marquee now speeds up with scroll velocity, in either direction.
+- Added a thin reading-progress bar along the top edge.
+- Fixed a rare canvas error when a frame timestamp ran behind the clock.
+- Featured *ASMR Hospital Doctor* and *Dentist Inc.* alongside the other highlights.
+- Added a *Tooling & AI* skill group with Claude Code and Unity CLI (CI/CD and Deployment moved into it); the skill cards now sit in two rows of three. Both also appear in the hero's stack marquee.
+- The project grid now fills every row exactly: a small layout solver picks each card's span (keeping the order and preferring natural sizes), re-runs for every genre filter and for tablet widths, and cards animate to their new size as well as position when filtering.
+
 ## v4.0.0 - 2026-11-02
 
 - Redesigned the site around "game feel": a deep plum playfield with power-up accents (coin yellow, pink, cyan, lime, violet), Unbounded display type and Figtree body text.
