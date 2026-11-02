@@ -5,7 +5,8 @@ Source for [osamasarfraz.github.io](https://osamasarfraz.github.io), the portfol
 ---
 
 ## 🎮 What's on the site
-- **Hero** — a headline with game-feel physics: the letters drop in and bounce on load, wobble when the cursor brushes them and launch with sparks and screen shake when clicked. Beside it, a tilting portrait card and a "now building" toast; below, a scrolling stack marquee.
+- **Hero** — a headline with game-feel physics: the letters drop in and bounce on load, wobble when the cursor brushes them and launch with sparks and screen shake when clicked. Clicks score points, quick clicks build a combo, and the best score is remembered. Beside it, a tilting portrait that flips into a player card, a "now building" toast and counting-up stats; below, a stack marquee that speeds up as you scroll.
+- **Sound effects** — small synthesised sounds (landing thuds, hit blips, launch bursts, filter clicks, unlock chimes), off by default. The speaker button in the top bar turns them on and remembers the choice. No audio files: everything is generated with the Web Audio API in `assets/js/sfx.js`.
 - **Projects** — a filterable grid of all 22 games, colour-coded by genre. Cards tilt toward the cursor, filtering animates cards into their new places, and the details dialog zooms out of the card you clicked.
 - **Experience, Skills, Education and Achievements** — plain, readable HTML. The timelines fill as you scroll, and achievements "unlock" like in-game badges.
 - **Contact** — LinkedIn, itch.io, email and phone.
@@ -23,7 +24,8 @@ Plain HTML, CSS and JavaScript. No framework, no build step, no runtime dependen
 │   ├── js/
 │   │   ├── main.js            # Project grid, filters, dialog; starts everything
 │   │   ├── hero.js            # Physics headline, sparks canvas, "now building" toast
-│   │   ├── fx.js              # Scroll reveals, tilt, sliding pills, timeline rail, menu
+│   │   ├── fx.js              # Scroll reveals, tilt, magnetic buttons, pills, timeline rail, marquee, menu
+│   │   ├── sfx.js             # Synthesised sound effects and the speaker toggle
 │   │   └── projects.js        # Project data (titles, genres, art, links)
 │   └── img/
 │       ├── projects/          # Game screenshots and icons
@@ -54,7 +56,8 @@ GitHub Pages serves the `main` branch from the repository root. Push to `main` a
 
 ## ♿ Accessibility
 - Every project card is real HTML: titles, links and filters all work from the keyboard, and the details dialog is a native `<dialog>`.
-- Under `prefers-reduced-motion` the page is still: no physics headline, tilt, marquee, reveals or dialog zoom.
+- Under `prefers-reduced-motion` the page is still: no physics headline, tilt, marquee, reveals, score floaters or dialog zoom. The portrait still flips, without animation.
+- Sound is opt-in and never plays until the visitor turns it on.
 - The physics headline keeps the real text for screen readers; the animated letters are hidden from assistive tech.
 - Text colours meet WCAG AA contrast on their backgrounds.
 

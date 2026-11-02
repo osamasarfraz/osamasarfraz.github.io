@@ -1,8 +1,9 @@
 // Wires up the page: project grid + filters, details dialog, then hands off to
 // the hero physics (hero.js) and page-wide motion (fx.js).
-import { projects, GENRES } from './projects.js?v=4.0.0';
-import { initFx, observeReveal, tilt, slidingPill, reduce } from './fx.js?v=4.0.0';
-import { initHero } from './hero.js?v=4.0.0';
+import { projects, GENRES } from './projects.js?v=4.1.0';
+import { initFx, observeReveal, tilt, slidingPill, reduce } from './fx.js?v=4.1.0';
+import { initHero } from './hero.js?v=4.1.0';
+import { sfx, initSoundToggle } from './sfx.js?v=4.1.0';
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -155,6 +156,7 @@ function renderFilters() {
     if (!btn || btn.getAttribute('aria-pressed') === 'true') return;
     box.querySelectorAll('.filter').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
     place(btn);
+    sfx.click();
     applyFilter(btn.dataset.genre);
   });
 }
@@ -193,6 +195,7 @@ function openProject(i, card) {
     || '<span class="card-meta">No public link yet.</span>';
   dialog.classList.remove('closing');
   dialog.showModal();
+  sfx.open();
   if (!reduce) {
     dialog.animate([fromOrigin(), { opacity: 1, transform: 'none' }], { duration: 520, easing: EASE });
     $('.dialog-body', dialog).animate(
@@ -205,6 +208,7 @@ function openProject(i, card) {
 let closing = false;
 async function closeDialog() {
   if (!dialog.open || closing) return;
+  sfx.close();
   if (!reduce) {
     closing = true;
     dialog.classList.add('closing');
@@ -223,5 +227,6 @@ dialog.addEventListener('cancel', (e) => { e.preventDefault(); closeDialog(); })
 $('#year').textContent = new Date().getFullYear();
 renderGrid();
 renderFilters();
+initSoundToggle($('#sound-btn'));
 initFx();
 initHero();

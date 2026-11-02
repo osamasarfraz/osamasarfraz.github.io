@@ -5,10 +5,15 @@
 //   • moving the pointer through them kicks them with the pointer's velocity,
 //     and they spring back with a wobble and a colour "hit flash";
 //   • clicking/tapping launches the nearby letters with sparks and screen shake.
-// Plain DOM transforms plus one <canvas> for particles; no libraries.
+// Clicks score points: quick successive clicks build a combo, and the best
+// score is remembered. Plain DOM transforms plus one <canvas> for particles.
 // Everything here is skipped under prefers-reduced-motion.
 
+import { sfx } from './sfx.js?v=4.1.0';
+
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const SPRING = 'cubic-bezier(.34,1.56,.64,1)';
+const COMBO_WINDOW = 1400;   // ms between clicks that keeps a combo alive
 
 const INK = [245, 241, 255];
 const HUES = [[255, 210, 63], [255, 92, 138], [62, 230, 255], [139, 227, 107], [179, 155, 255]];
@@ -58,9 +63,12 @@ export function initHero() {
   const toast = hero.querySelector('.toast');
   const hint = hero.querySelector('.hint');
 
+  initFlip(hero);
+  const stack = hero.querySelector('.portrait-stack');
   if (reduce) {
     h1.classList.add('ready');
     toast?.classList.add('show');
+    stack?.classList.add('ready');
     return;
   }
 
@@ -72,6 +80,66 @@ export function initHero() {
   const parts = [];
   let dpr = 1, fontPx = 64, off = { x: 0, y: 0 };
   let shake = 0, running = false, last = 0, introDone = false, touched = false, canvasDirty = false;
+
+  // ---- score & combo ----
+  const hud = hero.querySelector('.hud');
+  const floaters = hero.querySelector('.floaters');
+  let score = 0, combo = 0, lastClick = 0, best = 0, comboTimer = 0;
+  try { best = Number(localStorage.getItem('hiscore')) || 0; } catch { /* ignore */ }
+  if (best) requestAnimationFrame(paintHud);
+
+  function paintHud() {
+    if (!hud) return;
+    hud.querySelector('.hud-score').textContent = score.toLocaleString();
+    hud.querySelector('.hud-best').textContent = best.toLocaleString();
+    const c = hud.querySelector('.hud-combo');
+    c.textContent = combo > 1 ? `×${combo}` : '';
+    c.hidden = combo <= 1;
+  }
+  function floatText(text, x, y, cls = '') {
+    if (!floaters) return;
+    const el = document.createElement('span');
+    el.className = `floater ${cls}`;
+    el.textContent = text;
+    el.style.left = `${x}px`; el.style.top = `${y}px`;
+    floaters.append(el);
+    const drift = (Math.random() - 0.5) * 40;
+    el.animate([
+      { opacity: 0, transform: 'translate(-50%, -50%) scale(.4) rotate(-10deg)' },
+      { opacity: 1, transform: 'translate(-50%, -70%) scale(1.15) rotate(3deg)', offset: 0.18 },
+      { opacity: 1, transform: `translate(calc(-50% + ${drift / 2}px), -120%) scale(1)`, offset: 0.6 },
+      { opacity: 0, transform: `translate(calc(-50% + ${drift}px), -200%) scale(.9)` },
+    ], { duration: cls ? 1100 : 900, easing: 'cubic-bezier(.2,.7,.2,1)', fill: 'forwards' }).finished
+      .then(() => el.remove()).catch(() => el.remove());
+  }
+  function addScore(launched, x, y) {
+    const t = performance.now();
+    combo = t - lastClick < COMBO_WINDOW ? combo + 1 : 1;
+    lastClick = t;
+    const pts = launched * 10 * combo;
+    score += pts;
+    if (score > best) {
+      best = score;
+      try { localStorage.setItem('hiscore', String(best)); } catch { /* ignore */ }
+    }
+    floatText(`+${pts}`, x, y);
+    if (combo > 1) {
+      const big = combo % 5 === 0;
+      floatText(big ? `×${combo} combo!` : `×${combo}`, x + 28 + Math.random() * 20, y - 36, big ? 'combo big' : 'combo');
+    }
+    hud?.classList.add('show');
+    paintHud();
+    hud?.querySelector('.hud-score')?.animate(
+      [{ transform: 'scale(1.35)', color: '#ffd23f' }, { transform: 'none' }],
+      { duration: 420, easing: SPRING },
+    );
+    if (combo > 1) hud?.querySelector('.hud-combo')?.animate(
+      [{ transform: `scale(${1.4 + Math.min(combo, 10) * 0.06}) rotate(-8deg)` }, { transform: 'none' }],
+      { duration: 500, easing: SPRING },
+    );
+    clearTimeout(comboTimer);
+    comboTimer = setTimeout(() => { combo = 0; paintHud(); }, COMBO_WINDOW);
+  }
 
   function measure() {
     fontPx = parseFloat(getComputedStyle(h1).fontSize) || 64;
@@ -135,7 +203,7 @@ export function initHero() {
         p.size += (70 - p.size) * 0.18 * dt;
         ctx.strokeStyle = `rgba(255,210,63,${t * 0.9})`;
         ctx.lineWidth = 3 * t + 0.5;
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.stroke();
+        ctx.beginPath(); ctx.arc(p.x, p.y, Math.max(0, p.size), 0, Math.PI * 2); ctx.stroke();
       } else if (p.kind === 'spark') {
         p.vy += 0.32 * dt; p.vx *= Math.pow(0.97, dt);
         p.x += p.vx * dt; p.y += p.vy * dt;
@@ -169,7 +237,7 @@ export function initHero() {
           L.vy = -impact * 0.34;
           L.vs += Math.min(0.28, impact * 0.016);
           L.vr += (Math.random() - 0.5) * impact * 0.6;
-          if (impact > 7) dust(L, impact);
+          if (impact > 7) { dust(L, impact); sfx.land(impact); }
         } else {
           L.vy = 0; L.mode = 'spring';
         }
@@ -187,7 +255,7 @@ export function initHero() {
   }
 
   function tick(now) {
-    const dt = Math.min((now - last) / 16.667, 3);
+    const dt = Math.max(0, Math.min((now - last) / 16.667, 3));
     last = now;
     let active = false;
     for (const L of letters) if (step(L, dt, now)) active = true;
@@ -238,7 +306,9 @@ export function initHero() {
         L.vy += (vy * 0.42 + (dy / n) * 2.2) * f;
         L.vr += vx * 0.5 * f;
         L.vs += Math.min(sp, 30) * 0.004 * f;
+        const prev = L.flash;
         L.flash = Math.min(1, Math.max(L.flash, (f * Math.min(sp, 30)) / 10));
+        if (f > 0.35 && sp > 6 && prev < 0.2) sfx.hit(f, letters.indexOf(L) % 8);
         hit = true;
       }
       if (hit) { interacted(); wake(); }
@@ -252,9 +322,11 @@ export function initHero() {
     const r = inner.getBoundingClientRect();
     const x = e.clientX - r.left, y = e.clientY - r.top;
     const R = fontPx * 3.2;
+    let launched = 0;
     for (const L of letters) {
       const dx = L.cx + L.x - x, dy = L.cy + L.y - y, d = Math.hypot(dx, dy);
       if (d > R) continue;
+      launched++;
       const f = 1 - d / R, n = d || 1;
       L.mode = 'drop';
       L.vy = Math.min(L.vy, 0) - (5 + 13 * f) * (0.8 + Math.random() * 0.4);
@@ -265,6 +337,11 @@ export function initHero() {
     }
     shake = Math.max(shake, 8);
     burst(off.x + x, off.y + y);
+    if (launched) {
+      addScore(launched, off.x + x, off.y + y);
+      sfx.launch(combo);
+      if (combo >= 5) shake = Math.max(shake, 8 + combo);
+    }
     interacted();
     wake();
   });
@@ -286,6 +363,8 @@ export function initHero() {
       introDone = true;
       toast?.classList.add('show');
       hint?.classList.add('show');
+      stack?.classList.add('ready');
+      countUp(hero);
     }, letters.length * STAGGER + 700);
   }
 
@@ -297,5 +376,39 @@ export function initHero() {
   Promise.race([fontsReady, new Promise((r) => setTimeout(r, 1500))]).then(() => {
     measured = true;
     intro();
+  });
+}
+
+// ---- Facts row: numbers count up once the headline has landed ----
+function countUp(hero) {
+  hero.querySelectorAll('.facts b').forEach((b, i) => {
+    const m = b.textContent.match(/^(\d+)(.*)$/);
+    if (!m) return;
+    const target = Number(m[1]), suffix = m[2];
+    const dur = 700 + i * 150, t0 = performance.now() + i * 120;
+    let shown = -1;
+    const frame = (now) => {
+      const t = Math.min(1, Math.max(0, (now - t0) / dur));
+      const v = Math.round(target * (1 - Math.pow(1 - t, 3)));
+      if (v !== shown) { shown = v; b.textContent = v + suffix; if (t < 1) sfx.tick(); }
+      if (t < 1) requestAnimationFrame(frame);
+      else b.animate([{ transform: 'scale(1.3)' }, { transform: 'none' }], { duration: 450, easing: SPRING });
+    };
+    b.textContent = '0' + suffix;
+    requestAnimationFrame(frame);
+  });
+}
+
+// ---- Portrait: click to flip over to the player card ----
+function initFlip(hero) {
+  const btn = hero.querySelector('.portrait-frame');
+  if (!btn) return;
+  const chip = hero.querySelector('.flip-chip');
+  btn.addEventListener('click', () => {
+    const on = btn.classList.toggle('flipped');
+    btn.setAttribute('aria-pressed', String(on));
+    btn.setAttribute('aria-label', on ? 'Flip back to the photo' : 'Flip to the player card');
+    chip?.classList.add('gone');
+    sfx.flip();
   });
 }
