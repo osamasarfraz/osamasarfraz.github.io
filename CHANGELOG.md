@@ -13,6 +13,8 @@ All notable changes to this project are documented in this file.
 - The stack marquee now speeds up with scroll velocity, in either direction.
 - Added a thin reading-progress bar along the top edge.
 - Fixed a rare canvas error when a frame timestamp ran behind the clock.
+- Featured *ASMR Hospital Doctor* and *Dentist Inc.* alongside the other highlights.
+- The project grid now fills every row exactly: a small layout solver picks each card's span (keeping the order and preferring natural sizes), re-runs for every genre filter and for tablet widths, and cards animate to their new size as well as position when filtering.
 
 ## v4.0.0 - 2026-11-02
 

@@ -8,7 +8,8 @@
 //              shown as an app tile on a blurred backdrop; wide art fills the cover.
 //   about    — optional longer description, shown in the details dialog
 //   links    — optional store / demo links { label, url }
-//   featured — true makes the card span two columns on wide screens
+//   featured — true makes the card larger (two thirds of the row on wide
+//              screens). The grid picks exact spans so every row is full.
 
 export const GENRES = ['Multiplayer', 'Educational', 'Hyper-casual', 'Simulation', 'Arcade & Puzzle'];
 
@@ -100,7 +101,7 @@ export const projects = [
   },
   {
     title: 'ASMR Hospital Doctor', meta: '2D idle · simulation', genre: 'Simulation',
-    image: IMG + 'asmr_hospital_doctor.jpg',
+    featured: true, image: IMG + 'asmr_hospital_doctor.jpg',
     links: [
       { label: 'Play Store', url: 'https://play.google.com/store/apps/details?id=com.playnation.asmr.satisfying.doctor.games&hl=en&gl=US' },
       { label: 'App Store', url: 'https://apps.apple.com/pk/app/asmr-hospital-doctor-games/id1643497401' },
@@ -108,7 +109,7 @@ export const projects = [
   },
   {
     title: 'Dentist Inc.', meta: '3D hyper-casual', genre: 'Hyper-casual',
-    image: IMG + 'dentist_inc.jpg',
+    featured: true, image: IMG + 'dentist_inc.jpg',
     links: [
       { label: 'Play Store', url: 'https://play.google.com/store/apps/details?id=com.taprix.dentist.hospital.inc.doctor.games&hl=en_US' },
       { label: 'App Store', url: 'https://apps.apple.com/pk/app/dentist-hospital-doctor-games/id1618914291' },

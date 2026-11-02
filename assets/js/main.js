@@ -56,6 +56,47 @@ function linkHTML(l) {
 // ---------------- Grid ----------------
 const grid = $('#project-grid');
 
+// Every row of the 12-column grid is filled exactly. Cards keep their order;
+// a small search picks each card's span from its allowed sizes (cost = how far
+// from its natural size), so featured cards stay big where the sum allows and
+// stray cards at the end stretch instead of leaving a hole. Run once for wide
+// screens (--span) and once for tablets (--span-t); CSS reads both.
+const SPANS = {
+  wide: { normal: [[4, 0], [6, 1], [12, 8]], featured: [[8, 0], [6, 1.5], [12, 3], [4, 5]] },
+  tablet: { normal: [[6, 0], [12, 4]], featured: [[12, 0], [6, 1]] },
+};
+function solveSpans(cards, table) {
+  const n = cards.length, best = Array(n + 1).fill(null);
+  best[n] = { cost: 0, spans: [] };
+  for (let i = n - 1; i >= 0; i--) {
+    let row = null;
+    const tryRow = (j, sum, cost, spans) => {
+      if (sum === 12) {
+        const tail = best[j];
+        if (tail && (!row || cost + tail.cost < row.cost)) row = { cost: cost + tail.cost, spans: spans.concat(tail.spans) };
+        return;
+      }
+      if (sum > 12 || j >= n) return;
+      const opts = cards[j].classList.contains('featured') ? table.featured : table.normal;
+      for (const [span, c] of opts) tryRow(j + 1, sum + span, cost + c, [...spans, span]);
+    };
+    tryRow(i, 0, 0, []);
+    best[i] = row;
+  }
+  return best[0].spans;
+}
+function relayout() {
+  const visible = [...grid.children].filter((c) => !c.classList.contains('hidden'));
+  if (!visible.length) return;
+  const wide = solveSpans(visible, SPANS.wide), tablet = solveSpans(visible, SPANS.tablet);
+  visible.forEach((c, i) => {
+    c.style.setProperty('--span', wide[i]);
+    c.style.setProperty('--span-t', tablet[i]);
+    c.dataset.span = wide[i];
+    c.dataset.spanT = tablet[i];
+  });
+}
+
 function renderGrid() {
   grid.innerHTML = projects.map((p, i) => {
     const status = p.status
@@ -81,6 +122,7 @@ function renderGrid() {
     </li>`;
   }).join('');
 
+  relayout();
   grid.querySelectorAll('.card-cover').forEach(fitCover);
   grid.querySelectorAll('.card-inner').forEach((el) => tilt(el, 7));
   observeReveal([...grid.children]);
@@ -114,6 +156,7 @@ async function applyFilter(genre) {
     c.getAnimations().forEach((a) => a.cancel());
     c.classList.toggle('hidden', !match(c));
   });
+  relayout();
 
   let shown = 0, entering = 0;
   cards.forEach((c) => {
@@ -123,9 +166,12 @@ async function applyFilter(genre) {
     if (reduce) return;
     const a = first.get(c), b = c.getBoundingClientRect();
     if (a) {
-      const dx = a.left - b.left, dy = a.top - b.top;
-      if (Math.abs(dx) > 1 || Math.abs(dy) > 1) {
-        c.animate([{ transform: `translate(${dx}px, ${dy}px)` }, { transform: 'none' }], { duration: 650, easing: EASE });
+      const dx = a.left - b.left, dy = a.top - b.top, sx = a.width / b.width, sy = a.height / b.height;
+      if (Math.abs(dx) > 1 || Math.abs(dy) > 1 || Math.abs(sx - 1) > 0.01 || Math.abs(sy - 1) > 0.01) {
+        c.animate(
+          [{ transform: `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`, transformOrigin: '0 0' }, { transform: 'none', transformOrigin: '0 0' }],
+          { duration: 650, easing: EASE },
+        );
       }
     } else if (b.top < window.innerHeight && b.bottom > 0) {
       c.animate(

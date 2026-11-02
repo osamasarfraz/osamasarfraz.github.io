@@ -34,7 +34,7 @@ Plain HTML, CSS and JavaScript. No framework, no build step, no runtime dependen
 └── _config.yml                # GitHub Pages settings
 ```
 
-To add or edit a game, update `assets/js/projects.js` — each entry's fields are documented at the top of the file. Square icons are shown as an app tile on a blurred backdrop; wide screenshots fill the card. Projects without art get a generated monogram cover. Experience, skills and the rest are edited directly in `index.html`.
+To add or edit a game, update `assets/js/projects.js` — each entry's fields are documented at the top of the file. Square icons are shown as an app tile on a blurred backdrop; wide screenshots fill the card. Projects without art get a generated monogram cover. Mark a game `featured: true` to make its card larger; the grid works out exact column spans so every row is full, whatever the filter, so you never need to balance the layout by hand. Experience, skills and the rest are edited directly in `index.html`.
 
 ---
 

@@ -425,9 +425,11 @@ section, footer { scroll-margin-top: 72px; }
 .filters .pill-indicator { background: var(--pc, var(--ink)); }
 .no-pill .filter[aria-pressed="true"] { background: var(--g); }
 
-.project-grid { list-style: none; display: grid; grid-template-columns: repeat(12, 1fr); grid-auto-flow: dense; gap: 20px; }
+.project-grid { list-style: none; display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px; }
 .card { grid-column: span 4; display: flex; }
-.card.featured { grid-column: span 8; }
+/* Spans come from main.js (see relayout); these are the no-JS defaults. */
+.card { --span: 4; --span-t: 6; grid-column: span var(--span); }
+.card.featured { --span: 8; --span-t: 12; }
 .card.hidden { display: none; }
 .card-inner {
   --rx: 0deg; --ry: 0deg; --lift: 0px;
@@ -449,7 +451,9 @@ section, footer { scroll-margin-top: 72px; }
   position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: var(--panel-2);
   display: block; width: 100%; padding: 0; border: 0; cursor: pointer; color: inherit; text-align: left; font: inherit;
 }
-.card.featured .card-cover { aspect-ratio: 16 / 7.4; }
+.card[data-span="6"] .card-cover { aspect-ratio: 16 / 9; }
+.card[data-span="8"] .card-cover, .card.featured:not([data-span]) .card-cover { aspect-ratio: 16 / 7.4; }
+.card[data-span="12"] .card-cover { aspect-ratio: 21 / 9; }
 .card-cover img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .8s var(--ease-out), filter .5s; }
 .card:hover .card-cover img:not(.backdrop) { transform: scale(1.06); }
 .card-inner.tilting .card-cover img:not(.backdrop):not(.icon):not(.shot) { transform: scale(1.1) translate(calc(var(--px, 0) * -2.5%), calc(var(--py, 0) * -2.5%)); transition: transform .15s linear; }
@@ -467,7 +471,9 @@ section, footer { scroll-margin-top: 72px; }
   position: absolute; left: 50%; top: 50%; height: 82%; width: auto; translate: -50% -50%;
   border-radius: 10px; box-shadow: 0 20px 40px -14px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.15);
 }
-.card.featured .card-cover.tile img.icon { width: 30%; }
+.card[data-span="6"] .card-cover.tile img.icon { width: 36%; }
+.card[data-span="8"] .card-cover.tile img.icon, .card.featured:not([data-span]) .card-cover.tile img.icon { width: 30%; }
+.card[data-span="12"] .card-cover.tile img.icon { width: 22%; }
 /* No art: generated cover in the genre's colours, with a monogram */
 .card-cover.gen, .dialog-cover.gen { display: grid; place-items: center; }
 .card-cover.gen::before, .dialog-cover.gen::before {
@@ -692,9 +698,11 @@ section, footer { scroll-margin-top: 72px; }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 1000px) {
-  .card { grid-column: span 6; }
-  .card.featured { grid-column: span 12; }
-  .card.featured .card-cover { aspect-ratio: 16 / 8; }
+  .card { grid-column: span var(--span-t); }
+  .card[data-span] .card-cover { aspect-ratio: 16 / 10; }
+  .card[data-span-t="12"] .card-cover, .card.featured:not([data-span-t]) .card-cover { aspect-ratio: 16 / 8; }
+  .card[data-span] .card-cover.tile img.icon { width: 44%; }
+  .card[data-span-t="12"] .card-cover.tile img.icon, .card.featured:not([data-span-t]) .card-cover.tile img.icon { width: 30%; }
   .skill-group, .skill-group:nth-child(1), .skill-group:nth-child(2) { grid-column: span 3; }
   .skill-group:nth-child(5) { grid-column: span 6; }
 
@@ -721,8 +729,8 @@ section, footer { scroll-margin-top: 72px; }
 }
 @media (max-width: 640px) {
   .card, .card.featured { grid-column: span 12; }
-  .card.featured .card-cover { aspect-ratio: 16 / 10; }
-  .card.featured .card-cover.tile img.icon { width: 44%; }
+  .card .card-cover, .card[data-span-t] .card-cover { aspect-ratio: 16 / 10; }
+  .card .card-cover.tile img.icon, .card[data-span-t] .card-cover.tile img.icon { width: 44%; }
   .skill-group, .skill-group:nth-child(n) { grid-column: span 6; }
   .timeline { --rail-x: 8px; }
   .job { grid-template-columns: 1fr; gap: 10px; }
