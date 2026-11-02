@@ -14,6 +14,7 @@ All notable changes to this project are documented in this file.
 - Added a thin reading-progress bar along the top edge.
 - Fixed a rare canvas error when a frame timestamp ran behind the clock.
 - Featured *ASMR Hospital Doctor* and *Dentist Inc.* alongside the other highlights.
+- Added a *Tooling & AI* skill group with Claude Code and Unity CLI (CI/CD and Deployment moved into it); the skill cards now sit in two rows of three.
 - The project grid now fills every row exactly: a small layout solver picks each card's span (keeping the order and preferring natural sizes), re-runs for every genre filter and for tablet widths, and cards animate to their new size as well as position when filtering.
 
 ## v4.0.0 - 2026-11-02

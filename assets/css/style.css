@@ -575,7 +575,6 @@ section, footer { scroll-margin-top: 72px; }
   grid-column: span 2; position: relative; overflow: hidden;
   padding: 24px 24px 26px; border-radius: var(--radius-lg); background: var(--panel); border: 1px solid var(--line);
 }
-.skill-group:nth-child(1), .skill-group:nth-child(2) { grid-column: span 3; }
 .skill-group::before {
   content: ""; position: absolute; inset: 0 0 auto; height: 3px; background: var(--sg, var(--coin));
   transform: scaleX(0); transform-origin: left; transition: transform 1s var(--ease-out) calc(var(--stagger, 0ms) + 200ms);
@@ -585,6 +584,7 @@ section, footer { scroll-margin-top: 72px; }
 .skill-group:nth-child(3) { --sg: var(--pink); }
 .skill-group:nth-child(4) { --sg: var(--lime); }
 .skill-group:nth-child(5) { --sg: var(--violet); }
+.skill-group:nth-child(6) { --sg: var(--coin); }
 .skill-group h3 { font-size: 17px; margin-bottom: 16px; }
 .chips { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
 .chips li {
@@ -703,8 +703,7 @@ section, footer { scroll-margin-top: 72px; }
   .card[data-span-t="12"] .card-cover, .card.featured:not([data-span-t]) .card-cover { aspect-ratio: 16 / 8; }
   .card[data-span] .card-cover.tile img.icon { width: 44%; }
   .card[data-span-t="12"] .card-cover.tile img.icon, .card.featured:not([data-span-t]) .card-cover.tile img.icon { width: 30%; }
-  .skill-group, .skill-group:nth-child(1), .skill-group:nth-child(2) { grid-column: span 3; }
-  .skill-group:nth-child(5) { grid-column: span 6; }
+  .skill-group { grid-column: span 3; }
 
   .menu-btn { display: inline-grid; }
   .nav {
@@ -731,7 +730,7 @@ section, footer { scroll-margin-top: 72px; }
   .card, .card.featured { grid-column: span 12; }
   .card .card-cover, .card[data-span-t] .card-cover { aspect-ratio: 16 / 10; }
   .card .card-cover.tile img.icon, .card[data-span-t] .card-cover.tile img.icon { width: 44%; }
-  .skill-group, .skill-group:nth-child(n) { grid-column: span 6; }
+  .skill-group { grid-column: span 6; }
   .timeline { --rail-x: 8px; }
   .job { grid-template-columns: 1fr; gap: 10px; }
   .when { flex-direction: row; align-items: center; flex-wrap: wrap; padding-left: 36px; }
