@@ -239,7 +239,7 @@ svg.line { fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: 
 
 .lede { color: var(--muted); font-size: clamp(17px, 1.35vw, 20px); max-width: 52ch; margin-bottom: 30px; }
 .lede strong { color: var(--ink); font-weight: 600; }
-.cta { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+.cta { display: flex; gap: 18px; flex-wrap: wrap; align-items: center; }
 .hint {
   display: inline-flex; align-items: center; gap: 8px; margin-top: 26px;
   color: var(--muted); font-size: 14px;

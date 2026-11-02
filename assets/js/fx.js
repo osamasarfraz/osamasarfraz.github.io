@@ -72,28 +72,40 @@ export function tilt(el, max = 8) {
 }
 
 // Buttons that lean toward the pointer when it comes near (fine pointers only).
-export function magnetic(els, reach = 48, pull = 0.35) {
+// Only the nearest button engages, and none does while the pointer is over
+// some other control, so neighbouring buttons never slide into each other.
+export function magnetic(els, reach = 28, pull = 0.3, maxX = 8, maxY = 6) {
   if (reduce || !finePointer || !els.length) return;
   let raf = 0, ev = null;
+  const release = (el) => {
+    if (!el.classList.contains('magnet')) return;
+    el.style.setProperty('--bx', '0px');
+    el.style.setProperty('--by', '0px');
+    el.classList.remove('magnet');
+  };
   const apply = () => {
     raf = 0;
+    const over = ev.target instanceof Element ? ev.target.closest('a, button, input, select, textarea, [role="button"]') : null;
+    let best = null, bestD = Infinity, bx = 0, by = 0;
     for (const el of els) {
       const r = el.getBoundingClientRect();
       const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
       const dx = ev.clientX - cx, dy = ev.clientY - cy;
-      const inside = Math.abs(dx) < r.width / 2 + reach && Math.abs(dy) < r.height / 2 + reach;
-      if (inside) {
-        el.style.setProperty('--bx', `${(dx * pull).toFixed(1)}px`);
-        el.style.setProperty('--by', `${(dy * pull).toFixed(1)}px`);
-        el.classList.add('magnet');
-      } else if (el.classList.contains('magnet')) {
-        el.style.setProperty('--bx', '0px');
-        el.style.setProperty('--by', '0px');
-        el.classList.remove('magnet');
-      }
+      // distance from the pointer to the button's edge (0 when inside it)
+      const d = Math.hypot(Math.max(0, Math.abs(dx) - r.width / 2), Math.max(0, Math.abs(dy) - r.height / 2));
+      if (d <= reach && d < bestD && (!over || over === el)) { best = el; bestD = d; bx = dx; by = dy; }
+    }
+    for (const el of els) if (el !== best) release(el);
+    if (best) {
+      const ease = 1 - bestD / (reach + 1); // fades out toward the edge of reach
+      const clampTo = (v, m) => Math.max(-m, Math.min(m, v));
+      best.style.setProperty('--bx', `${clampTo(bx * pull * ease, maxX).toFixed(1)}px`);
+      best.style.setProperty('--by', `${clampTo(by * pull * ease, maxY).toFixed(1)}px`);
+      best.classList.add('magnet');
     }
   };
   window.addEventListener('pointermove', (e) => { ev = e; raf ||= requestAnimationFrame(apply); }, { passive: true });
+  window.addEventListener('pointerleave', () => els.forEach(release));
 }
 
 // A pill that glides to whichever item is active. Returns place(active).
